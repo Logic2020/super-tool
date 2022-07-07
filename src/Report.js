@@ -14,7 +14,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {PercentIncrease} from './Inputs';
 import {getRelevantAccountData,getRelevantSegments} from './Data';
-import {persistState,getPersistedValue} from './store';
+import {persistState,getPersistedValue} from './components/store';
 import {Sums} from './Sums'
 import { useTheme } from '@mui/material/styles';
 
