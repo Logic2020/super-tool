@@ -20,7 +20,16 @@ function persistState(segment, account, value, store=localStorage) {
 function getPersistedValue(segment, account, store=localStorage) {
    
   let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
-  return state && state[segment] && state[segment][account] != null ? state[segment][account]: (state && state[segment] && state[segment]["all"] !=null ? state[segment]["all"] : 0 : 0)
+
+  if (state && state[segment] && !account && state[segment]["all"]) {
+    // segment but no account
+    return state[segment]["all"]
+  } else if (state && state[segment] && state[segment][account] != null) {
+    // segment and account
+    return state[segment][account]
+  } else {
+    return 0
+  }
 }
 
 export {persistState,getPersistedValue} 

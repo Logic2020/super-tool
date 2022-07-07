@@ -22,6 +22,12 @@ test('segment and mismatched-account', () => {
   expect(getPersistedValue("seg", "practice/acc", store)).toBe(0);
 });
 
+test('segment setting, but no account', () => {
+  let store = storageMock();
+  persistState("seg", "", 40, store)
+  expect(getPersistedValue("seg", "practice/acc", store)).toBe(0);
+});
+
 // Storage Mock
 function storageMock() {
   let storage = {};
