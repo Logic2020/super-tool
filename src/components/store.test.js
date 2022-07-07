@@ -6,7 +6,7 @@ test('getting a non-existent key returns 0', () => {
 
 test('segment only', () => {
   let store = storageMock();
-  persistState(store, "seg", "", 60, store)
+  persistState(store, "seg", "", 60)
   expect(getPersistedValue(store, "seg", "")).toBe(60);
 });
 
@@ -24,8 +24,8 @@ test('segment and mismatched-account', () => {
 
 test('segment setting, but no account', () => {
   let store = storageMock();
-  persistState("seg", "", 40, store)
-  expect(getPersistedValue("seg", "practice/acc", store)).toBe(0);
+  persistState(store, "seg", "", 40)
+  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
 });
 
 // Storage Mock
