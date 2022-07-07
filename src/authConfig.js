@@ -69,6 +69,7 @@ export const powerBIQueryAPI = {
     executeQueryEndpoint: `https://api.powerbi.com/v1.0/myorg/datasets/${superToolDatasetID}/executeQueries`
 };
 
+// TODO: hook these up
 export const defaultTargetMarginPercentage = 50;
 
 export const targetMarginPercentages = {
