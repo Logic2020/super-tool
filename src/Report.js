@@ -47,14 +47,15 @@ export default function SummaryReport(props) {
         <TableBody>
           {activeSegments.map((segment) => (
             <Row key={segment} 
-                 segment={segment} 
-                 rows={getRelevantAccountData(props.accountData, 
-                                             [segment], 
-                                             props.salesperson,
-                                             props.monthYear,
-                                             props.effectiveDate,
-                                             props.practice)} 
-                 summaryTrigger={setTrigger}/>
+              segment={segment} 
+              rows={getRelevantAccountData(props.accountData, 
+                                          [segment], 
+                                          props.salesperson,
+                                          props.monthYear,
+                                          props.effectiveDate,
+                                          props.practice)}
+              monthYear={props.monthYear}    
+              summaryTrigger={setTrigger}/>
           ))}
           <TotalsRow accountData={props.accountData}
                      segments={activeSegments}
@@ -75,7 +76,12 @@ function Row(props) {
 
   return (
     <React.Fragment>
-      <SegmentRow segment={segment} rows={rows} open={open} setOpen={setOpen} summaryTrigger={props.summaryTrigger}/>
+      <SegmentRow segment={segment} 
+                  rows={rows} 
+                  open={open} 
+                  setOpen={setOpen}
+                  monthYear={props.monthYear}
+                  summaryTrigger={props.summaryTrigger}/>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -116,13 +122,13 @@ function SegmentRow(props) {
   let rows = props.rows;
 
   // for segment sliders
-  const [segmentIncreaseValue, setSegmentIncreaseValue] = React.useState(getPersistedValue(props.segment,""));
+  const [segmentIncreaseValue, setSegmentIncreaseValue] = React.useState(getPersistedValue(localStorage, props.segment,""));
 
   const handleSegmentChange = (event, newValue) => {
     setSegmentIncreaseValue(newValue);
 
     // persist changes
-    persistState(props.segment,"",newValue)
+    persistState(localStorage, props.segment,"",newValue)
 
     // trigger a refresh of the totals based on this new increase value
     props.summaryTrigger(newValue)
@@ -157,11 +163,11 @@ function AccountRow(props) {
   let accountRow = props.row
 
   // for account sliders
-  const [accountIncreaseValue, setAccountIncreaseValue] = React.useState(getPersistedValue(segment,accountRow.account));
+  const [accountIncreaseValue, setAccountIncreaseValue] = React.useState(getPersistedValue(localStorage, segment, getStoreAccountKey(accountRow.account, accountRow.practice)));
 
   const handleAccountChange = (event, newValue) => {
     setAccountIncreaseValue(newValue);
-    persistState(segment,accountRow.account,newValue)
+    persistState(localStorage, segment,getStoreAccountKey(accountRow.account,accountRow.practice),newValue)
     props.summaryTrigger(newValue)
   };
 
@@ -236,17 +242,21 @@ export function getSegmentSums(segment, accountData, debug) {
     let accountsAdjustedRevenue = accountData.reduce( (sum, item) => {
 
       // calc adjusted revenue across accounts
-      let accountIncreaseValue = getPersistedValue(item.segment, item.account)
+      let accountIncreaseValue = getPersistedValue(localStorage, item.segment, getStoreAccountKey(item.account,item.practice))
 
       return sum + parseInt(getAdjustedRevenue(item.revenue,accountIncreaseValue)) 
       }, 0
     )
 
     // next apply segment-level adjustment
-    let segmentIncreaseValue = getPersistedValue(segment)
+    let segmentIncreaseValue = getPersistedValue(localStorage, segment)
 
     sums.adjustedRevenue = parseInt(getAdjustedRevenue(accountsAdjustedRevenue,segmentIncreaseValue))      
   }
 
   return sums
+}
+
+function getStoreAccountKey(account, practice) {
+  return `${practice}/${account}`
 }

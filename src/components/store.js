@@ -1,4 +1,4 @@
-function persistState(segment, account, value, store=localStorage) {
+function persistState(store, segment, account, value) {
 
   // save change to local storage for later recall
   let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
@@ -17,7 +17,7 @@ function persistState(segment, account, value, store=localStorage) {
   store.setItem("state", JSON.stringify(state));
 }
 
-function getPersistedValue(segment, account, store=localStorage) {
+function getPersistedValue(store, segment, account) {
    
   let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
 
