@@ -1,31 +1,31 @@
 import {persistState,getPersistedValue} from './store';
 
 test('getting a non-existent key returns 0', () => {
-  expect(getPersistedValue("", "", storageMock())).toBe(0);
+  expect(getPersistedValue(storageMock(), "", "")).toBe(0);
 });
 
 test('segment only', () => {
   let store = storageMock();
-  persistState("seg", "", 60, store)
-  expect(getPersistedValue("seg", "", store)).toBe(60);
+  persistState(store, "seg", "", 60)
+  expect(getPersistedValue(store, "seg", "")).toBe(60);
 });
 
 test('segment and account', () => {
   let store = storageMock();
-  persistState("seg", "practice/acc", 40, store)
-  expect(getPersistedValue("seg", "practice/acc", store)).toBe(40);
+  persistState(store, "seg", "practice/acc", 40, )
+  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(40);
 });
 
 test('segment and mismatched-account', () => {
   let store = storageMock();
-  persistState("seg", "practice/accs", 40, store)
-  expect(getPersistedValue("seg", "practice/acc", store)).toBe(0);
+  persistState(store, "seg", "practice/accs", 40)
+  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
 });
 
 test('segment setting, but no account', () => {
   let store = storageMock();
-  persistState("seg", "", 40, store)
-  expect(getPersistedValue("seg", "practice/acc", store)).toBe(0);
+  persistState(store, "seg", "", 40)
+  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
 });
 
 // Storage Mock
