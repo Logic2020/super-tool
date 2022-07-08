@@ -69,12 +69,20 @@ export const powerBIQueryAPI = {
     executeQueryEndpoint: `https://api.powerbi.com/v1.0/myorg/datasets/${superToolDatasetID}/executeQueries`
 };
 
-// TODO: hook these up
-export const defaultTargetMarginPercentage = 50;
+// margin = revenue - cog
 
-export const targetMarginPercentages = {
-  "T-Mobile": 40,
-  "Microsoft": 40,
-  "San Diego Gas & Electric": 45,
-  "Pacific Gas & Electric": 40
-};
+// target_margin% = target_margin/revenue
+
+// target_margin% * revenue = target_margin ?= target_revenue - cog
+
+// target_revenue = (target_margin% * revenue) + cog
+
+// // TODO: hook these up
+// export const defaultTargetMarginPercentage = 50;
+
+// export const targetMarginPercentages = {
+//   "T-Mobile": 40,
+//   "Microsoft": 40,
+//   "San Diego Gas & Electric": 45,
+//   "Pacific Gas & Electric": 40
+// };
