@@ -1,7 +1,7 @@
 export function persistState(store, segment, account, value) {
 
   // save change to local storage for later recall
-  let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
+  let state = getState(store)
 
   // if necessary, init a key for this segment
   if ( !state[segment] ) {
@@ -15,6 +15,10 @@ export function persistState(store, segment, account, value) {
   }
 
   store.setItem("state", JSON.stringify(state));
+}
+
+export function getState(store) {
+  return store.getItem("state") ? JSON.parse(store.getItem("state")): {};
 }
 
 export function getPersistedValue(store, segment, account) {

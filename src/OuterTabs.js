@@ -3,12 +3,18 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Salesperson,Segments,MonthYearPicker,EffectiveDate,PracticeArea} from './Inputs';
 import DateTabs from './DateTabs';
 import {TabPanel,a11yProps} from './TabPanel'
 import RawDataTable from "./components/RawDataTable";
 import SummaryView from "./components/Summary";
 import {getLatestDate} from "./Data"
+import {AdjustmentSummary} from "./components/AdjustmentSummary";
 
 export default function OuterTabs(props) {
 
@@ -102,14 +108,35 @@ export default function OuterTabs(props) {
                       effectiveDate={effectiveDate}
                       practice={practice} 
                       setTrigger={setTrigger}/>
-            <DateTabs startDate={startDate} 
-                      endDate={endDate} 
-                      accountData={props.accountData} 
-                      segments={segments} 
-                      salesperson={salesperson}
-                      effectiveDate={effectiveDate}
-                      practice={practice} 
-                      setTrigger={setTrigger}/>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header">
+                  <Typography>Adjustments Summary</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <AdjustmentSummary/>
+                </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header">
+                <Typography>Make Adjustments</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <DateTabs startDate={startDate} 
+                        endDate={endDate} 
+                        accountData={props.accountData} 
+                        segments={segments} 
+                        salesperson={salesperson}
+                        effectiveDate={effectiveDate}
+                        practice={practice} 
+                        setTrigger={setTrigger}/>
+              </AccordionDetails>
+            </Accordion>
           </Stack>
         </Stack>
       </TabPanel>
