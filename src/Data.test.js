@@ -1,4 +1,4 @@
-import {getRelevantAccountData, getRelevantSegments} from './Data';
+import {getRelevantAccountData, getRelevantSegments, findMonthYearDifference, parseMonthYear} from './Data';
 
 test('segment filtering works', () => {
   let data = getRelevantAccountData(revenueData, "Microsoft","", "", "July 5, 2022");
@@ -41,6 +41,27 @@ test('get segments associated with a single salesperson', () => {
   let data = getRelevantSegments(revenueData, [], "ben", "", "July 5, 2022");
   expect(data.length).toBe(1);
 });
+
+test('parses month and year', () => {
+  let dateObj = parseMonthYear('7/2022')
+  expect(dateObj).toStrictEqual([7, 2022])
+})
+
+test('find difference between two dates same year', () => {
+  let diff = findDateDifference('3/2022', '5/2022');
+  expect(diff).toBe(2);
+})
+
+test('find difference between two dates different year 1 year gap', () => {
+  let diff = findMonthYearDifference('11/2022', '1/2023');
+  expect(diff).toBe(2);
+})
+
+test('find difference between two dates different year 2 year gap', () => {
+  let diff = findMonthYearDifference('11/2022', '1/2024');
+  expect(diff).toBe(14);
+})
+
 
 const revenueData = [
   {

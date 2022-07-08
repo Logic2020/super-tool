@@ -1,4 +1,5 @@
-function persistState(store, segment, account, value) {
+//A default value for start month is supplied so the new paramenter doesn't break previous unit tests
+function persistState(store, segment, account, value, start_month=null) {
 
   // save change to local storage for later recall
   let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
@@ -9,11 +10,16 @@ function persistState(store, segment, account, value) {
   }
 
   if (segment && !account) {
-    state[segment]["all"] = value
+    state[segment]["all"] = {
+      'revenue_increase': value,
+      'start_month': start_month
+    }
   } else if (segment && account) {      
-    state[segment][account] = value
+    state[segment][account] = {
+      'revenue_increase': value,
+      'start_month': start_month
+    }
   }
-
   store.setItem("state", JSON.stringify(state));
 }
 
@@ -28,7 +34,10 @@ function getPersistedValue(store, segment, account) {
     // segment and account
     return state[segment][account]
   } else {
-    return 0
+    return {
+      "revenue_increase": 0,
+      "start_month": null
+    }
   }
 }
 

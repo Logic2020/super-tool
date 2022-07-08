@@ -1,32 +1,57 @@
 import {persistState,getPersistedValue} from './store';
 
 test('getting a non-existent key returns 0', () => {
-  expect(getPersistedValue(storageMock(), "", "")).toBe(0);
+  expect(getPersistedValue(storageMock(), "", "")).toStrictEqual({
+    "revenue_increase": 0,
+    "start_month": null
+  });
 });
 
 test('segment only', () => {
   let store = storageMock();
-  persistState(store, "seg", "", 60)
-  expect(getPersistedValue(store, "seg", "")).toBe(60);
+  persistState(store, "seg", 60)
+  expect(getPersistedValue(store, "seg", "")).toStrictEqual(
+    {
+      "revenue_increase": 0,
+      "start_month": null
+    })
 });
 
 test('segment and account', () => {
   let store = storageMock();
-  persistState(store, "seg", "practice/acc", 40, )
-  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(40);
+  persistState(store, "seg", "practice/acc", 40)
+  expect(getPersistedValue(store, "seg", "practice/acc")).toStrictEqual({
+    'revenue_increase': 40,
+    'start_month': null
+  });
 });
 
 test('segment and mismatched-account', () => {
   let store = storageMock();
   persistState(store, "seg", "practice/accs", 40)
-  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
+  expect(getPersistedValue(store, "seg", "practice/acc")).toStrictEqual({
+    "revenue_increase": 0,
+    "start_month": null
+  });
 });
 
 test('segment setting, but no account', () => {
   let store = storageMock();
   persistState(store, "seg", "", 40)
-  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
+  expect(getPersistedValue(store, "seg", "practice/acc")).toStrictEqual({
+    "revenue_increase": 0,
+    "start_month": null
+  });
 });
+
+test('account stores start date and revenue adjustement', () => {
+  let store = storageMock()
+  persistState(store, "seg", "practice/acc", 40, 3)
+  expect(getPersistedValue(store, "seg", "practice/acc")).toStrictEqual({
+    "revenue_increase": 40,
+    "start_month": 3
+  })
+})
 
 // Storage Mock
 function storageMock() {

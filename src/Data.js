@@ -72,3 +72,25 @@ export function getLatestDate(allEffectiveDates) {
     return new Date(dateString)
   }).sort().reverse()[0])
 }
+
+export function parseMonthYear(dateString){
+  return dateString.split('/').map(numString => {
+    return parseInt(numString)
+  })
+}
+
+export function findDateDifference(startDate, endDate){
+  //in the resulting array, 0 is month, 1 is year
+  let parsedStart = parseMonthYear(startDate);
+  let parsedEnd = parseMonthYear(endDate);
+  //for if we ever need to catch year gaps larger than 1
+  let yearDifference = parsedEnd[1] - parsedStart[1]
+  if(parsedEnd[1] > parsedStart[1]){
+    return (parsedEnd[0] + (12*yearDifference)) - parsedStart[0]
+  }
+  else{
+    return parsedEnd[0] - parsedStart[0]
+  }
+}
+
+export function determineDateChanges()
