@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {PercentIncrease} from './Inputs';
-import {getRelevantAccountData,getRelevantSegments,getAdjustedRevenue} from './Data';
+import {getRelevantAccountData,getRelevantSegments,getAdjustedRevenue,formatPercentage} from './Data';
 import {persistState,getPersistedValue,getStoreAccountKey} from './components/Store';
 import {Sums, getSegmentSums} from './components/Sums'
 import { useTheme } from '@mui/material/styles';
@@ -31,9 +31,9 @@ export default function ModelingView(props) {
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
-          <TableRow>
+          <TableRow  style={{backgroundColor:'#E9E9E9'}}>
             <TableCell />
-            <TableCell>Segment</TableCell>
+            <TableCell >Segment</TableCell>
             <TableCell align="right">Current Revenue</TableCell>
             <TableCell align="right">Revenue Increase%</TableCell>
             <TableCell align="right">Adjusted Revenue</TableCell>
@@ -200,14 +200,14 @@ function TotalsRow(props) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+      <TableRow style={{backgroundColor:'#E6F7FE'}}>
         <TableCell/>
-        <TableCell component="th" scope="row"><Typography style={totalsFontStyle}>Totals</Typography></TableCell>
-        <TableCell align="right"><Typography style={totalsFontStyle}>{sums.revenue}</Typography></TableCell>
-        <TableCell align="right"><Typography style={totalsFontStyle}>n/a</Typography></TableCell>
-        <TableCell align="right"><Typography style={totalsFontStyle}>{sums.adjustedRevenue}</Typography></TableCell>
-        <TableCell align="right"><Typography style={totalsFontStyle}>{sums.targetRevenue}</Typography></TableCell>
-        <TableCell align="right"><Typography style={totalsFontStyle}>{sums.adjustedRevenue-sums.targetRevenue}</Typography></TableCell>
+        <TableCell >Totals</TableCell>
+        <TableCell align="right">{sums.revenue}</TableCell>
+        <TableCell align="right">{formatPercentage((sums.adjustedRevenue-sums.revenue)/sums.revenue)}</TableCell>
+        <TableCell align="right">{sums.adjustedRevenue}</TableCell>
+        <TableCell align="right">{sums.targetRevenue}</TableCell>
+        <TableCell align="right">{sums.adjustedRevenue-sums.targetRevenue}</TableCell>
       </TableRow>
     </React.Fragment>
   );

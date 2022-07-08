@@ -76,3 +76,7 @@ export function getLatestDate(allEffectiveDates) {
 export const getAdjustedRevenue = (revenue, increasePercent) => {
   return increasePercent ? (revenue * (1+increasePercent/100)).toFixed(): revenue;
 };
+
+export function formatPercentage(percentage) {
+  return (100*percentage).toFixed(0) + "%"
+}

@@ -6,8 +6,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {getRelevantAccountData,getRelevantSegments} from '../Data';
-import {getSegmentSums} from './Sums';
+import Typography from '@mui/material/Typography';
+import {getRelevantAccountData,getRelevantSegments,formatPercentage} from '../Data';
+import {getSegmentSums, Sums} from './Sums';
+import { useTheme } from '@mui/material/styles';
 
 export default function SummaryView(props) {                                        
 
@@ -22,7 +24,7 @@ export default function SummaryView(props) {
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
-          <TableRow>
+          <TableRow style={{backgroundColor:'#E9E9E9'}}>
             <TableCell>Segment</TableCell>
             <TableCell align="right">Current Revenue</TableCell>
             <TableCell align="right">Current Margin</TableCell>
@@ -44,12 +46,12 @@ export default function SummaryView(props) {
                                           props.practice)}
               monthYear={props.monthYear}/>
           ))}
-          {/* <TotalsRow accountData={props.accountData}
+          <TotalsRow accountData={props.accountData}
                      segments={activeSegments}
                      salesperson={props.salesperson}
                      monthYear={props.monthYear}
                      effectiveDate={props.effectiveDate}
-                     practice={props.practice}/> */}
+                     practice={props.practice}/>
         </TableBody>
       </Table>
     </TableContainer>
@@ -57,19 +59,6 @@ export default function SummaryView(props) {
 }
 
 function SegmentSummary(props) {
-  const { rows, segment } = props;
-  const [open, setOpen] = React.useState(false);
-
-  return (
-    <SegmentRow segment={segment} 
-                  rows={rows} 
-                  open={open} 
-                  setOpen={setOpen}
-                  monthYear={props.monthYear}/>
-  );
-}
-
-function SegmentRow(props) {
 
   let rows = props.rows;
 
@@ -88,6 +77,35 @@ function SegmentRow(props) {
   )
 }
 
-function formatPercentage(percentage) {
-  return (100*percentage).toFixed(0) + "%"
+function TotalsRow(props) {
+
+  let sums = new Sums()
+
+  props.segments.forEach(segment => {
+    let revenueData = getRelevantAccountData(props.accountData, 
+                                             [segment], 
+                                             props.salesperson,
+                                             props.monthYear,
+                                             props.effectiveDate,
+                                             props.practice)
+    
+    sums.add(getSegmentSums(segment,revenueData,"totals"))
+  })
+
+  // text in totals row should be bolded
+  const totalsFontStyle = {fontWeight: useTheme().typography.fontWeightBold}
+
+  return (
+    <React.Fragment>
+      <TableRow style={{backgroundColor:'#E6F7FE'}}>
+        <TableCell component="th" scope="row"><Typography>Totals</Typography></TableCell>
+        <TableCell align="right">{sums.revenue}</TableCell>
+        <TableCell align="right">{sums.revenue - sums.cogs}</TableCell>
+        <TableCell align="right">{formatPercentage((sums.revenue - sums.cogs)/sums.revenue)}</TableCell>
+        <TableCell align="right">{sums.adjustedRevenue}</TableCell>
+        <TableCell align="right">{sums.adjustedRevenue-sums.targetRevenue}</TableCell>
+        <TableCell align="right">{formatPercentage((sums.adjustedRevenue - sums.cogs)/sums.adjustedRevenue)}</TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
 }
