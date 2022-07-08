@@ -18,10 +18,7 @@ import {persistState,getPersistedValue,getStoreAccountKey} from './components/St
 import {Sums, getSegmentSums} from './components/Sums'
 import { useTheme } from '@mui/material/styles';
 
-export default function ModelingView(props) {
-
-  // for triggering refreshes of the totals row based on slider changes
-  const [trigger, setTrigger] = React.useState(0);                                           
+export default function ModelingView(props) {                                       
 
   let activeSegments = getRelevantSegments(props.accountData, 
                                            props.segments,
@@ -55,15 +52,14 @@ export default function ModelingView(props) {
                                           props.effectiveDate,
                                           props.practice)}
               monthYear={props.monthYear}    
-              summaryTrigger={setTrigger}/>
+              setTrigger={props.setTrigger}/>
           ))}
           <TotalsRow accountData={props.accountData}
                      segments={activeSegments}
                      salesperson={props.salesperson}
                      monthYear={props.monthYear}
                      effectiveDate={props.effectiveDate}
-                     practice={props.practice}
-                     trigger={trigger}/>
+                     practice={props.practice}/>
         </TableBody>
       </Table>
     </TableContainer>
@@ -81,7 +77,7 @@ function Row(props) {
                   open={open} 
                   setOpen={setOpen}
                   monthYear={props.monthYear}
-                  summaryTrigger={props.summaryTrigger}/>
+                  setTrigger={props.setTrigger}/>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -105,7 +101,7 @@ function Row(props) {
                   {rows.map((accountRow) => (
                     <AccountRow row={accountRow} 
                                 segment={props.segment} 
-                                summaryTrigger={props.summaryTrigger}/>
+                                setTrigger={props.setTrigger}/>
                   ))}
                 </TableBody>
               </Table>
@@ -131,7 +127,7 @@ function SegmentRow(props) {
     persistState(localStorage, props.segment,"",newValue)
 
     // trigger a refresh of the totals based on this new increase value
-    props.summaryTrigger(newValue)
+    props.setTrigger(newValue)
   };
 
   let sums = getSegmentSums(props.segment, rows, "segment")
@@ -168,7 +164,7 @@ function AccountRow(props) {
   const handleAccountChange = (event, newValue) => {
     setAccountIncreaseValue(newValue);
     persistState(localStorage, segment,getStoreAccountKey(accountRow.account,accountRow.practice),newValue)
-    props.summaryTrigger(newValue)
+    props.setTrigger(newValue)
   };
 
   return (

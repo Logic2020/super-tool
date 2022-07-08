@@ -62,6 +62,9 @@ export default function OuterTabs(props) {
     setEndDate(endDate);
   };
 
+  // for triggering refreshes of tabular data based on slider changes
+  const [trigger, setTrigger] = React.useState(0); 
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -94,17 +97,19 @@ export default function OuterTabs(props) {
             </Stack>
             <SummaryView key={props.segments} 
                       accountData={props.accountData} 
-                      segments={props.segments} 
-                      salesperson={props.salesperson}
-                      effectiveDate={props.effectiveDate}
-                      practice={props.practice} />
+                      segments={segments} 
+                      salesperson={salesperson}
+                      effectiveDate={effectiveDate}
+                      practice={practice} 
+                      setTrigger={setTrigger}/>
             <DateTabs startDate={startDate} 
                       endDate={endDate} 
                       accountData={props.accountData} 
                       segments={segments} 
                       salesperson={salesperson}
                       effectiveDate={effectiveDate}
-                      practice={practice}/>
+                      practice={practice} 
+                      setTrigger={setTrigger}/>
           </Stack>
         </Stack>
       </TabPanel>

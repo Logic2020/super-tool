@@ -43,7 +43,8 @@ export default function DateTabs(props) {
                       segments={props.segments} 
                       salesperson={props.salesperson}
                       effectiveDate={props.effectiveDate}
-                      practice={props.practice} />
+                      practice={props.practice} 
+                      setTrigger={props.setTrigger} />
         </TabPanel>
       ))}
     </Box>

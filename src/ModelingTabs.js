@@ -27,7 +27,8 @@ export default function ModelingTabs(props) {
                        accountData={props.accountData}
                        monthYear={props.monthYear}
                        effectiveDate={props.effectiveDate}
-                       practice={props.practice}/>
+                       practice={props.practice} 
+                       setTrigger={props.setTrigger}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
         TBD

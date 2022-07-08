@@ -5,17 +5,11 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import IconButton from '@mui/material/IconButton'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Paper from '@mui/material/Paper';
 import {getRelevantAccountData,getRelevantSegments} from '../Data';
 import {getSegmentSums} from './Sums';
 
-export default function SummaryView(props) {
-
-  // for triggering refreshes of the totals row based on slider changes
-  const [trigger, setTrigger] = React.useState(0);                                           
+export default function SummaryView(props) {                                        
 
   let activeSegments = getRelevantSegments(props.accountData, 
                                            props.segments,
@@ -48,16 +42,14 @@ export default function SummaryView(props) {
                                           props.monthYear,
                                           props.effectiveDate,
                                           props.practice)}
-              monthYear={props.monthYear}    
-              summaryTrigger={setTrigger}/>
+              monthYear={props.monthYear}/>
           ))}
           {/* <TotalsRow accountData={props.accountData}
                      segments={activeSegments}
                      salesperson={props.salesperson}
                      monthYear={props.monthYear}
                      effectiveDate={props.effectiveDate}
-                     practice={props.practice}
-                     trigger={trigger}/> */}
+                     practice={props.practice}/> */}
         </TableBody>
       </Table>
     </TableContainer>
@@ -73,8 +65,7 @@ function SegmentSummary(props) {
                   rows={rows} 
                   open={open} 
                   setOpen={setOpen}
-                  monthYear={props.monthYear}
-                  summaryTrigger={props.summaryTrigger}/>
+                  monthYear={props.monthYear}/>
   );
 }
 
