@@ -43,24 +43,26 @@ test('get segments associated with a single salesperson', () => {
 });
 
 test('parses month and year', () => {
-  let dateObj = parseMonthYear('7/2022')
+  let dateObj = parseMonthYear('7-2022')
   expect(dateObj).toStrictEqual([7, 2022])
 })
 
 test('find difference between two dates same year', () => {
-  let diff = findDateDifference('3/2022', '5/2022');
+  let diff = findMonthYearDifference('3-2022', '5-2022');
   expect(diff).toBe(2);
 })
 
 test('find difference between two dates different year 1 year gap', () => {
-  let diff = findMonthYearDifference('11/2022', '1/2023');
+  let diff = findMonthYearDifference('11-2022', '1-2023');
   expect(diff).toBe(2);
 })
 
 test('find difference between two dates different year 2 year gap', () => {
-  let diff = findMonthYearDifference('11/2022', '1/2024');
+  let diff = findMonthYearDifference('11-2022', '1-2024');
   expect(diff).toBe(14);
 })
+
+
 
 
 const revenueData = [
