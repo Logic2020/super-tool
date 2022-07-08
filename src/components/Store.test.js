@@ -1,4 +1,4 @@
-import {persistState,getPersistedValue} from './store';
+import {persistState,getPersistedValue} from './Store';
 
 test('getting a non-existent key returns 0', () => {
   expect(getPersistedValue(storageMock(), "", "")).toBe(0);

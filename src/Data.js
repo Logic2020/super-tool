@@ -72,3 +72,7 @@ export function getLatestDate(allEffectiveDates) {
     return new Date(dateString)
   }).sort().reverse()[0])
 }
+
+export const getAdjustedRevenue = (revenue, increasePercent) => {
+  return increasePercent ? (revenue * (1+increasePercent/100)).toFixed(): revenue;
+};

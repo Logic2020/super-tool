@@ -1,4 +1,4 @@
-function persistState(store, segment, account, value) {
+export function persistState(store, segment, account, value) {
 
   // save change to local storage for later recall
   let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
@@ -17,7 +17,7 @@ function persistState(store, segment, account, value) {
   store.setItem("state", JSON.stringify(state));
 }
 
-function getPersistedValue(store, segment, account) {
+export function getPersistedValue(store, segment, account) {
    
   let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
 
@@ -32,4 +32,6 @@ function getPersistedValue(store, segment, account) {
   }
 }
 
-export {persistState,getPersistedValue} 
+export function getStoreAccountKey(account, practice) {
+  return `${practice}/${account}`
+}

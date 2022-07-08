@@ -2,10 +2,10 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import SummaryReport from './Report';
+import ModelingView from './Modeling';
 import {TabPanel,a11yProps} from './TabPanel'
 
-export default function ReportTabs(props) {
+export default function ModelingTabs(props) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -22,7 +22,7 @@ export default function ReportTabs(props) {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <SummaryReport segments={props.segments} 
+        <ModelingView segments={props.segments} 
                        salesperson={props.salesperson} 
                        accountData={props.accountData}
                        monthYear={props.monthYear}

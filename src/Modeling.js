@@ -13,12 +13,12 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {PercentIncrease} from './Inputs';
-import {getRelevantAccountData,getRelevantSegments} from './Data';
-import {persistState,getPersistedValue} from './components/store';
-import {Sums} from './Sums'
+import {getRelevantAccountData,getRelevantSegments,getAdjustedRevenue} from './Data';
+import {persistState,getPersistedValue,getStoreAccountKey} from './components/Store';
+import {Sums, getSegmentSums} from './components/Sums'
 import { useTheme } from '@mui/material/styles';
 
-export default function SummaryReport(props) {
+export default function ModelingView(props) {
 
   // for triggering refreshes of the totals row based on slider changes
   const [trigger, setTrigger] = React.useState(0);                                           
@@ -217,46 +217,4 @@ function TotalsRow(props) {
   );
 }
 
-const getAdjustedRevenue = (revenue, increasePercent) => {
-  return increasePercent ? (revenue * (1+increasePercent/100)).toFixed(): revenue;
-};
 
-// get sums for the accounts associated with a segment
-export function getSegmentSums(segment, accountData, debug) {
-
-  let sums = new Sums()
-
-  if (accountData) {
-
-    // sum revenue
-    sums.revenue = accountData.reduce( (sum, item) => {
-      return sum + item.revenue
-      }, 0)
-
-    // sum target revenue 
-    sums.targetRevenue =accountData.reduce( (sum, item) => {
-      return sum + item.targetRevenue
-    }, 0)
-
-    // sum adjusted revenue
-    let accountsAdjustedRevenue = accountData.reduce( (sum, item) => {
-
-      // calc adjusted revenue across accounts
-      let accountIncreaseValue = getPersistedValue(localStorage, item.segment, getStoreAccountKey(item.account,item.practice))
-
-      return sum + parseInt(getAdjustedRevenue(item.revenue,accountIncreaseValue)) 
-      }, 0
-    )
-
-    // next apply segment-level adjustment
-    let segmentIncreaseValue = getPersistedValue(localStorage, segment)
-
-    sums.adjustedRevenue = parseInt(getAdjustedRevenue(accountsAdjustedRevenue,segmentIncreaseValue))      
-  }
-
-  return sums
-}
-
-function getStoreAccountKey(account, practice) {
-  return `${practice}/${account}`
-}

@@ -7,6 +7,7 @@ import {Salesperson,Segments,MonthYearPicker,EffectiveDate,PracticeArea} from '.
 import DateTabs from './DateTabs';
 import {TabPanel,a11yProps} from './TabPanel'
 import RawDataTable from "./components/RawDataTable";
+import SummaryView from "./components/Summary";
 import {getLatestDate} from "./Data"
 
 export default function OuterTabs(props) {
@@ -91,6 +92,12 @@ export default function OuterTabs(props) {
               <MonthYearPicker label="Start Date" date={startDate} setDate={handleStartDateChange} minDate={new Date()}/>
               <MonthYearPicker label="End Date" date={endDate} setDate={handleEndDateChange} minDate={startDate}/>
             </Stack>
+            <SummaryView key={props.segments} 
+                      accountData={props.accountData} 
+                      segments={props.segments} 
+                      salesperson={props.salesperson}
+                      effectiveDate={props.effectiveDate}
+                      practice={props.practice} />
             <DateTabs startDate={startDate} 
                       endDate={endDate} 
                       accountData={props.accountData} 

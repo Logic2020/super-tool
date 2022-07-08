@@ -62,6 +62,7 @@ export function NormalizeData(rawResults) {
         salesperson: item["weekly person[Salesperson]"],
         monthYear: item["weekly person[Month Year]"],
         revenue: item["weekly person[Revenue]"] ? parseInt(item["weekly person[Revenue]"]) : 0,
+        cogs: item["weekly person[COGS]"] ? parseInt(item["weekly person[COGS]"]) : 0,
         targetRevenue: item["weekly person[Target Revenue]"] ? parseInt(item["weekly person[Target Revenue]"]) : 0,
         effectiveDate: effectiveDate
       }

@@ -1,4 +1,4 @@
-import {getSegmentSums} from './Report';
+import {getSegmentSums} from './Modeling';
 import {getRelevantAccountData} from './Data';
 
 test('t-mobile revenue summing', () => {
