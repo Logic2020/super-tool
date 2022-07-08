@@ -1,5 +1,6 @@
 import { powerBIQueryAPI } from "./authConfig";
 import {dateToString} from "./Data";
+import { handleResponseStatus } from "./handleStatus";
 
 export async function ExecuteQuery(accessToken) {
   const headers = new Headers();
@@ -17,7 +18,6 @@ export async function ExecuteQuery(accessToken) {
     // this field is required but is ignored by power bi
     "impersonatedUserName": "someuser@mycompany.com"
   }
-
   headers.append("Authorization", bearer);
   headers.append("Content-Type", "application/json");
 
@@ -28,12 +28,16 @@ export async function ExecuteQuery(accessToken) {
   };
 
   return fetch(powerBIQueryAPI.executeQueryEndpoint, options)
-      .then(response => response.json())
-      .catch(error => console.log(error));
+      .then(response => {
+        handleResponseStatus(response.status)
+        return response.json()
+      })
+      .catch(error => {
+        console.log(error)
+      });
 }
 
 export function NormalizeData(rawResults) {
-
   let segmentSet = new Set()
   let effectiveDateSet = new Set()
   let salespersonSet = new Set()
