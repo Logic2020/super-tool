@@ -1,4 +1,4 @@
-import {persistState,getPersistedValue} from './store';
+import {persistState,getPersistedValue, findUsableDates} from './store';
 
 test('getting a non-existent key returns 0', () => {
   expect(getPersistedValue(storageMock(), "", "")).toStrictEqual({
@@ -8,10 +8,10 @@ test('getting a non-existent key returns 0', () => {
 
 test('segment only', () => {
   let store = storageMock();
-  persistState(store, "seg", "", 60, '7-2022')
-  expect(getPersistedValue(store, "seg", "")).toStrictEqual(
+  persistState(store, "seg", "", 60, 'July, 2022')
+  expect(getPersistedValue(store, "seg", "", 'Jan, 2022')).toStrictEqual(
     {
-      "7-2022": {
+      "July, 2022": {
         "revenue_increase": 60
       }
     })
@@ -52,6 +52,12 @@ test('account stores start date and revenue adjustement', () => {
     }
   })
 });
+
+test('parsedDates returns correct date range', () => {
+  let selectedDate = '1-2022'
+  let dateArray = ['12-2021', '1-2022', '2-2022']
+  expect(findUsableDates(selectedDate,dateArray)).toStrictEqual(['1-2022', '2-2022'])
+})
 
 // Storage Mock
 function storageMock() {

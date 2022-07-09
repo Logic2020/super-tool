@@ -73,17 +73,10 @@ export function getLatestDate(allEffectiveDates) {
   }).sort().reverse()[0])
 }
 
-export function parseMonthYear(dateString){
-  return dateString.split('-').map(numString => {
-    return parseInt(numString)
-  })
-}
 
 export function findMonthYearDifference(startDate, endDate){
-  //in the resulting array, 0 is month, 1 is year
   let parsedStart = parseMonthYear(startDate);
   let parsedEnd = parseMonthYear(endDate);
-  //for if we ever need to catch year gaps larger than 1
   let yearDifference = parsedEnd[1] - parsedStart[1]
   if(parsedEnd[1] > parsedStart[1]){
     return (parsedEnd[0] + (12*yearDifference)) - parsedStart[0]
@@ -91,4 +84,11 @@ export function findMonthYearDifference(startDate, endDate){
   else{
     return parsedEnd[0] - parsedStart[0]
   }
+}
+
+export function findIndexOfMonth(selectedMonth, dateArray){
+  dateArray.push('January, 2100')
+  let sortedArray = dateArray.map((date)=>( new Date(date))).sort((date1, date2) => date1 - date2)
+  let searchIndex = sortedArray.findIndex(v => v >= new Date(selectedMonth))
+  return searchIndex
 }
