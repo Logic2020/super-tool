@@ -111,17 +111,6 @@ export default function OuterTabs(props) {
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header">
-                  <Typography>Adjustments Summary</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <AdjustmentSummary/>
-                </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel2a-content"
                 id="panel2a-header">
                 <Typography>Make Adjustments</Typography>
@@ -136,6 +125,17 @@ export default function OuterTabs(props) {
                         practice={practice} 
                         setTrigger={setTrigger}/>
               </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header">
+                  <Typography>Adjustments Summary</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <AdjustmentSummary/>
+                </AccordionDetails>
             </Accordion>
           </Stack>
         </Stack>
