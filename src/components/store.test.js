@@ -35,6 +35,32 @@ test('account stores start date and revenue adjustement', () => {
   expect(getPersistedValue(store, "seg", "practice/acc", "July, 2022")).toBe(40);
 });
 
+test('finds correct revenue with multiple accounts', () => {
+  let store = storageMock()
+  persistState(store, "seg", "practice/acc", 40, 'July, 2022')
+  persistState(store, "seg", "practice2/acc2", 60, 'June, 2022')
+  expect(getPersistedValue(store, "seg", "practice2/acc2", "July, 2022")).toBe(60);
+})
+
+test('handles single month prior to availilble data', () => {
+  let store = storageMock()
+  persistState(store, "seg", "practice/acc", 40, 'June, 2022')
+  expect(getPersistedValue(store, "seg", "practice/acc", "Jan, 2022")).toBe(40);
+})
+
+test('handles multiple months prior to availilble data', () => {
+  let store = storageMock()
+  persistState(store, "seg", "practice/acc", 40, 'June, 2022')
+  persistState(store, "seg", "practice/acc", 60, 'July, 2022')
+  expect(getPersistedValue(store, "seg", "practice/acc", "Jan, 2022")).toBe(40);
+})
+
+test('handles null value for account and date', () => {
+  let store = storageMock()
+  persistState(store, "seg", "practice/acc", 40, 'June, 2022')
+  expect(getPersistedValue(store, "seg", null, null)).toBe(0);
+})
+
 
 // Storage Mock
 function storageMock() {

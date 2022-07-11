@@ -17,10 +17,18 @@ function persistState(store, segment, account, value, start_month) {
       'revenue_increase': value
     }
   } else if (segment && account) {      
-    state[segment][account] = {}
-    state[segment][account][start_month] = {
-      'revenue_increase': value
+    if(!state[segment][account]){
+      state[segment][account] = {}
+      state[segment][account][start_month] = {
+        'revenue_increase': value
+      }
     }
+    else{
+      state[segment][account][start_month] = {
+        'revenue_increase': value
+      }
+    }
+    
   }
   store.setItem("state", JSON.stringify(state));
 }
@@ -36,18 +44,11 @@ function getPersistedValue(store, segment, account, selectedDate) {
     return state[segment]['all'][validMonth]['revenue_increase']
 
   } else if (state && state[segment] && state[segment][account] != null) {
-    // segment and account
-    // let accountKeys = Object.keys(state[segment][account])
-    // let validMonths = accountKeys.slice(findIndexOfMonth(selectedDate, accountKeys))
-    // let accountDates = {}
-
-    // for(let i = 0; i < validMonths.length-1; i++){
-    //   accountDates[validMonths[i]] = state[segment][account][validMonths[i]]
-    // }
 
     let accountKeys = Object.keys(state[segment][account])
     let validMonth = accountKeys[findIndexOfMonth(selectedDate, accountKeys)]
     return state[segment][account][validMonth]['revenue_increase']
+
   } else {
     return 0
   }
