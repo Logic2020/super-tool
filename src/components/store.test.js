@@ -7,7 +7,7 @@ test('getting a non-existent key returns 0', () => {
 test('segment only', () => {
   let store = storageMock();
   persistState(store, "seg", "", 60, 'July, 2022')
-  expect(getPersistedValue(store, "seg", "", 'Jan, 2022')).toBe(60)
+  expect(getPersistedValue(store, "seg", "", 'July, 2022')).toBe(60)
 });
 
 
@@ -45,14 +45,14 @@ test('finds correct revenue with multiple accounts', () => {
 test('handles single month prior to availilble data', () => {
   let store = storageMock()
   persistState(store, "seg", "practice/acc", 40, 'June, 2022')
-  expect(getPersistedValue(store, "seg", "practice/acc", "Jan, 2022")).toBe(40);
+  expect(getPersistedValue(store, "seg", "practice/acc", "Jan, 2022")).toBe(0);
 })
 
 test('handles multiple months prior to availilble data', () => {
   let store = storageMock()
   persistState(store, "seg", "practice/acc", 40, 'June, 2022')
   persistState(store, "seg", "practice/acc", 60, 'July, 2022')
-  expect(getPersistedValue(store, "seg", "practice/acc", "Jan, 2022")).toBe(40);
+  expect(getPersistedValue(store, "seg", "practice/acc", "Jan, 2022")).toBe(0);
 })
 
 test('handles null value for account and date', () => {

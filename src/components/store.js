@@ -40,14 +40,28 @@ function getPersistedValue(store, segment, account, selectedDate) {
   if (state && state[segment] && !account && state[segment]["all"]) {
 
     let accountKeys = Object.keys(state[segment]['all'])
-    let validMonth = accountKeys[findIndexOfMonth(selectedDate, accountKeys)]
-    return state[segment]['all'][validMonth]['revenue_increase']
+    let validMonthIndex = findIndexOfMonth(selectedDate, accountKeys)
+    if(validMonthIndex == -1){
+      return 0
+    }
+    else{
+      let validMonth = accountKeys[validMonthIndex]
+      return state[segment]['all'][validMonth]['revenue_increase']
+    }
+
+    
 
   } else if (state && state[segment] && state[segment][account] != null) {
 
     let accountKeys = Object.keys(state[segment][account])
-    let validMonth = accountKeys[findIndexOfMonth(selectedDate, accountKeys)]
-    return state[segment][account][validMonth]['revenue_increase']
+    let validMonthIndex = findIndexOfMonth(selectedDate, accountKeys)
+    if(validMonthIndex == -1){
+      return 0
+    }
+    else{
+      let validMonth = accountKeys[validMonthIndex]
+      return state[segment][account][validMonth]['revenue_increase']
+    }
 
   } else {
     return 0
