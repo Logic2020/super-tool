@@ -7,9 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import {getRelevantAccountData,getRelevantSegments,formatPercentage} from '../Data';
+import {getRelevantAccountData,getRelevantSegments,formatPercentage,getMonthYears} from '../Data';
 import {getSegmentSums, Sums} from './Sums';
-import { useTheme } from '@mui/material/styles';
 
 export default function SummaryView(props) {                                        
 
@@ -37,21 +36,22 @@ export default function SummaryView(props) {
         <TableBody>
           {activeSegments.map((segment) => (
             <SegmentSummary key={segment} 
+              accountData={props.accountData}
               segment={segment} 
-              rows={getRelevantAccountData(props.accountData, 
-                                          [segment], 
-                                          props.salesperson,
-                                          props.monthYear,
-                                          props.effectiveDate,
-                                          props.practice)}
-              monthYear={props.monthYear}/>
+              salesperson={props.salesperson}
+              effectiveDate={props.effectiveDate}
+              practice={props.practice}
+              startDate={props.startDate} 
+              endDate={props.endDate}/>
           ))}
           <TotalsRow accountData={props.accountData}
                      segments={activeSegments}
                      salesperson={props.salesperson}
                      monthYear={props.monthYear}
                      effectiveDate={props.effectiveDate}
-                     practice={props.practice}/>
+                     practice={props.practice}
+                     startDate={props.startDate} 
+                     endDate={props.endDate}/>
         </TableBody>
       </Table>
     </TableContainer>
@@ -60,9 +60,19 @@ export default function SummaryView(props) {
 
 function SegmentSummary(props) {
 
-  let rows = props.rows;
+  let sums = new Sums()
 
-  let sums = getSegmentSums(props.segment, rows, "segment")
+  // sum over each month year
+  getMonthYears(props.startDate,props.endDate).forEach(monthYear => {
+    let revenueData = getRelevantAccountData(props.accountData, 
+                                             [props.segment], 
+                                             props.salesperson,
+                                             monthYear,
+                                             props.effectiveDate,
+                                             props.practice)
+    
+    sums.add(getSegmentSums(props.segment,revenueData,"totals"))
+  })
 
   return (
     <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -81,19 +91,19 @@ function TotalsRow(props) {
 
   let sums = new Sums()
 
-  props.segments.forEach(segment => {
-    let revenueData = getRelevantAccountData(props.accountData, 
-                                             [segment], 
-                                             props.salesperson,
-                                             props.monthYear,
-                                             props.effectiveDate,
-                                             props.practice)
-    
-    sums.add(getSegmentSums(segment,revenueData,"totals"))
+  // sum over each month year, then sum over all segments
+  getMonthYears(props.startDate,props.endDate).forEach(monthYear => {
+    props.segments.forEach(segment => {
+      let revenueData = getRelevantAccountData(props.accountData, 
+                                              [segment], 
+                                              props.salesperson,
+                                              monthYear,
+                                              props.effectiveDate,
+                                              props.practice)
+      
+      sums.add(getSegmentSums(segment,revenueData,"totals"))
+    })
   })
-
-  // text in totals row should be bolded
-  const totalsFontStyle = {fontWeight: useTheme().typography.fontWeightBold}
 
   return (
     <React.Fragment>

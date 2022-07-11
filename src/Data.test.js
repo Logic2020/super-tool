@@ -1,4 +1,4 @@
-import {getRelevantAccountData, getRelevantSegments} from './Data';
+import {getRelevantAccountData, getRelevantSegments, getMonthYears} from './Data';
 
 test('segment filtering works', () => {
   let data = getRelevantAccountData(revenueData, "Microsoft","", "", "July 5, 2022");
@@ -41,6 +41,13 @@ test('get segments associated with a single salesperson', () => {
   let data = getRelevantSegments(revenueData, [], "ben", "", "July 5, 2022");
   expect(data.length).toBe(1);
 });
+
+test('get date array', () => {
+  let dateStringArray = getMonthYears("April 5, 2022", "July 5, 2022");
+  expect(dateStringArray.length).toBe(4);
+});
+
+getMonthYears
 
 const revenueData = [
   {

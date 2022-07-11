@@ -202,7 +202,7 @@ function TotalsRow(props) {
     <React.Fragment>
       <TableRow style={{backgroundColor:'#E6F7FE'}}>
         <TableCell/>
-        <TableCell >Totals</TableCell>
+        <TableCell component="th" scope="row">Totals</TableCell>
         <TableCell align="right">{sums.revenue}</TableCell>
         <TableCell align="right">{formatPercentage((sums.adjustedRevenue-sums.revenue)/sums.revenue)}</TableCell>
         <TableCell align="right">{sums.adjustedRevenue}</TableCell>

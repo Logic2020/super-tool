@@ -102,7 +102,9 @@ export default function OuterTabs(props) {
               <MonthYearPicker label="End Date" date={endDate} setDate={handleEndDateChange} minDate={startDate}/>
             </Stack>
             <SummaryView key={props.segments} 
-                      accountData={props.accountData} 
+                      accountData={props.accountData}
+                      startDate={startDate} 
+                      endDate={endDate} 
                       segments={segments} 
                       salesperson={salesperson}
                       effectiveDate={effectiveDate}

@@ -80,3 +80,18 @@ export const getAdjustedRevenue = (revenue, increasePercent) => {
 export function formatPercentage(percentage) {
   return (100*percentage).toFixed(0) + "%"
 }
+
+export function getMonthYears(startDateTimeStr, stopDateTimeStr) {
+  let monthYearDateTimeArray = [];
+  let currentDateTime = new Date(startDateTimeStr);
+  let stopDateTime = new Date(stopDateTimeStr);
+  while (currentDateTime <= stopDateTime) {
+    monthYearDateTimeArray.push(new Date(currentDateTime));
+    currentDateTime = new Date(currentDateTime.setMonth(currentDateTime.getMonth()+1));
+  }
+
+  // reduce month array to strings 
+  return monthYearDateTimeArray.map((item) => {
+    return `${item.toLocaleString('default', { month: 'short' })} ${item.getFullYear()}`
+  });
+}

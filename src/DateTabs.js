@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import ModelingTabs from './ModelingTabs';
 import {TabPanel,a11yProps} from './TabPanel'
+import {getMonthYears} from './Data'
 
 export default function DateTabs(props) {
   const [value, setValue] = React.useState(0);
@@ -11,20 +12,6 @@ export default function DateTabs(props) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  function getMonthYears(startDateTime, stopDateTime) {
-    let monthYearDateTimeArray = [];
-    let currentDateTime = new Date(startDateTime);
-    while (currentDateTime <= stopDateTime) {
-      monthYearDateTimeArray.push(new Date(currentDateTime));
-      currentDateTime = new Date(currentDateTime.setMonth(currentDateTime.getMonth()+1));
-    }
-
-    // reduce month array to strings 
-    return monthYearDateTimeArray.map((item) => {
-      return `${item.toLocaleString('default', { month: 'short' })} ${item.getFullYear()}`
-    });
-  }
 
   return (
     <Box sx={{ width: '100%' }}>
