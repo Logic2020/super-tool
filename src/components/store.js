@@ -36,19 +36,19 @@ function getPersistedValue(store, segment, account, selectedDate) {
     let validMonths = accountKeys.slice(findIndexOfMonth(selectedDate, accountKeys)) //should return keys for only relavent months
     let segmentDates = {}
 
-    for(let i = 0; i < validMonths.length; i++){
-      let selectedMonth = state[segment]['all'][validMonths[i]]
-      segmentDates[validMonths[i]] = selectedMonth
+    for(let i = 0; i < validMonths.length-1; i++){
+      segmentDates[validMonths[i]] = state[segment]['all'][validMonths[i]]
     }
     return segmentDates
 
   } else if (state && state[segment] && state[segment][account] != null) {
     // segment and account
-    let validMonths = state[segment][account].keys().slice(findIndexOfMonth(selectedDate))
+    let accountKeys = Object.keys(state[segment][account])
+    let validMonths = accountKeys.slice(findIndexOfMonth(selectedDate, accountKeys))
     let accountDates = {}
 
-    for(let i = 0; i < validMonths.lenth; i++){
-      accountDates[validMonths[i]] = state[segment][accountDates][validMonths[i]]
+    for(let i = 0; i < validMonths.length-1; i++){
+      accountDates[validMonths[i]] = state[segment][account][validMonths[i]]
     }
 
     return accountDates
@@ -58,29 +58,5 @@ function getPersistedValue(store, segment, account, selectedDate) {
     }
   }
 }
-
-// export function findUsableDates(selectedDate, dateArray){
-//   let parsedDates = dateArray.map(currentDate => {
-//     return parseMonthYear(currentDate)
-//   })
-//   let deleteList = []
-//   let parsedSelectedDate = parseMonthYear(selectedDate);
-//   for(let i = 0; i < parsedDates.length; i++){
-//     if(parsedDates[i][1] < parsedSelectedDate[1]){
-//       deleteList.push(i)
-//     }
-//     else if(parsedDates[i][1] == parsedSelectedDate[1]){
-//       if(parsedDates[i][0] < selectedDate[0]){
-//         deleteList.push(i)
-//       }
-//     }
-//   }
-
-//   for(let x = 0; x < deleteList.length; x++){
-//     dateArray.slice(x, 1)
-//   }
-//   //still need to return dates to original order
-//   return dateArray
-// }
 
 export {persistState, getPersistedValue} 

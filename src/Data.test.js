@@ -47,21 +47,6 @@ test('get segments associated with a single salesperson', () => {
 //   expect(dateObj).toStrictEqual([7, 2022])
 // })
 
-test('find difference between two dates same year', () => {
-  let diff = findMonthYearDifference('3-2022', '5-2022');
-  expect(diff).toBe(2);
-})
-
-test('find difference between two dates different year 1 year gap', () => {
-  let diff = findMonthYearDifference('11-2022', '1-2023');
-  expect(diff).toBe(2);
-})
-
-test('find difference between two dates different year 2 year gap', () => {
-  let diff = findMonthYearDifference('11-2022', '1-2024');
-  expect(diff).toBe(14);
-})
-
 test('get index of month in array that is greater than selected month', () => {
   let selectedMonth = 'Jan, 2022'
   let dateArray = ['Nov, 2021', 'Dec, 2021', 'Jan, 2022', 'Feb, 2022']
