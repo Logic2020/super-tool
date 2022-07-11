@@ -26,36 +26,30 @@ function persistState(store, segment, account, value, start_month) {
 }
 
 function getPersistedValue(store, segment, account, selectedDate) {
-   
+  //should return just the revenue % for the month that findIndexOfMonth selects
   let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
 
   if (state && state[segment] && !account && state[segment]["all"]) {
-    // segment but no account
-    // need to create an object of all the dates we need and return them and their values with the dates as the keys 
-    let accountKeys = Object.keys(state[segment]['all'])
-    let validMonths = accountKeys.slice(findIndexOfMonth(selectedDate, accountKeys)) //should return keys for only relavent months
-    let segmentDates = {}
 
-    for(let i = 0; i < validMonths.length-1; i++){
-      segmentDates[validMonths[i]] = state[segment]['all'][validMonths[i]]
-    }
-    return segmentDates
+    let accountKeys = Object.keys(state[segment]['all'])
+    let validMonth = accountKeys[findIndexOfMonth(selectedDate, accountKeys)]
+    return state[segment]['all'][validMonth]['revenue_increase']
 
   } else if (state && state[segment] && state[segment][account] != null) {
     // segment and account
+    // let accountKeys = Object.keys(state[segment][account])
+    // let validMonths = accountKeys.slice(findIndexOfMonth(selectedDate, accountKeys))
+    // let accountDates = {}
+
+    // for(let i = 0; i < validMonths.length-1; i++){
+    //   accountDates[validMonths[i]] = state[segment][account][validMonths[i]]
+    // }
+
     let accountKeys = Object.keys(state[segment][account])
-    let validMonths = accountKeys.slice(findIndexOfMonth(selectedDate, accountKeys))
-    let accountDates = {}
-
-    for(let i = 0; i < validMonths.length-1; i++){
-      accountDates[validMonths[i]] = state[segment][account][validMonths[i]]
-    }
-
-    return accountDates
+    let validMonth = accountKeys[findIndexOfMonth(selectedDate, accountKeys)]
+    return state[segment][account][validMonth]['revenue_increase']
   } else {
-    return {
-      "revenue_increase": 0
-    }
+    return 0
   }
 }
 

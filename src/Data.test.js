@@ -1,4 +1,4 @@
-import {getRelevantAccountData, getRelevantSegments, findIndexOfMonth, findMonthYearDifference, parseMonthYear} from './Data';
+import {getRelevantAccountData, getRelevantSegments, findIndexOfMonth} from './Data';
 
 test('segment filtering works', () => {
   let data = getRelevantAccountData(revenueData, "Microsoft","", "", "July 5, 2022");
@@ -42,16 +42,11 @@ test('get segments associated with a single salesperson', () => {
   expect(data.length).toBe(1);
 });
 
-// test('parses month and year', () => {
-//   let dateObj = parseMonthYear('7-2022')
-//   expect(dateObj).toStrictEqual([7, 2022])
-// })
-
-test('get index of month in array that is greater than selected month', () => {
-  let selectedMonth = 'Jan, 2022'
+test('a month later than latest start date', () => {
+  let selectedMonth = 'April, 2022'
   let dateArray = ['Nov, 2021', 'Dec, 2021', 'Jan, 2022', 'Feb, 2022']
-  expect(findIndexOfMonth(selectedMonth, dateArray)).toBe(2)
-})
+  expect(findIndexOfMonth(selectedMonth, dateArray)).toBe(3)
+});
 
 
 const revenueData = [

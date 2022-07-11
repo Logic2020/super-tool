@@ -77,5 +77,10 @@ export function findIndexOfMonth(selectedMonth, dateArray){
   dateArray.push('January, 2100')
   let sortedArray = dateArray.map((date)=>( new Date(date))).sort((date1, date2) => date1 - date2)
   let searchIndex = sortedArray.findIndex(v => v >= new Date(selectedMonth))
-  return searchIndex
+  if(searchIndex == 0){
+    return searchIndex
+  }
+  else{
+    return searchIndex - 1
+  }
 }
