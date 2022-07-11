@@ -89,6 +89,12 @@ const headCells = [
     label: 'Revenue',
   },
   {
+    id: 'cogs',
+    numeric: true,
+    disablePadding: false,
+    label: 'COGS',
+  },  
+  {
     id: 'targetrevenue',
     numeric: true,
     disablePadding: false,
@@ -204,6 +210,7 @@ export default function RawDataTable(props) {
                       <TableCell align="right">{row.effectiveDate}</TableCell>
                       <TableCell align="right">{row.monthYear}</TableCell>                      
                       <TableCell align="right">{row.revenue}</TableCell>
+                      <TableCell align="right">{row.cogs}</TableCell>
                       <TableCell align="right">{row.targetRevenue}</TableCell>
                     </TableRow>
                   );

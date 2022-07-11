@@ -3,11 +3,18 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Salesperson,Segments,MonthYearPicker,EffectiveDate,PracticeArea} from './Inputs';
 import DateTabs from './DateTabs';
 import {TabPanel,a11yProps} from './TabPanel'
 import RawDataTable from "./components/RawDataTable";
-import {getLatestDate} from "./Data"
+import SummaryView from "./components/Summary";
+import {getLatestDate} from "./components/Data"
+import {AdjustmentSummary} from "./components/AdjustmentSummary";
 
 export default function OuterTabs(props) {
 
@@ -61,6 +68,9 @@ export default function OuterTabs(props) {
     setEndDate(endDate);
   };
 
+  // for triggering refreshes of tabular data based on slider changes
+  const [trigger, setTrigger] = React.useState(0); 
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -91,13 +101,44 @@ export default function OuterTabs(props) {
               <MonthYearPicker label="Start Date" date={startDate} setDate={handleStartDateChange} minDate={new Date()}/>
               <MonthYearPicker label="End Date" date={endDate} setDate={handleEndDateChange} minDate={startDate}/>
             </Stack>
-            <DateTabs startDate={startDate} 
+            <SummaryView key={props.segments} 
+                      accountData={props.accountData}
+                      startDate={startDate} 
                       endDate={endDate} 
-                      accountData={props.accountData} 
                       segments={segments} 
                       salesperson={salesperson}
                       effectiveDate={effectiveDate}
-                      practice={practice}/>
+                      practice={practice} 
+                      setTrigger={setTrigger}/>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel2a-content"
+                id="panel2a-header">
+                <Typography>Make Adjustments</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <DateTabs startDate={startDate} 
+                        endDate={endDate} 
+                        accountData={props.accountData} 
+                        segments={segments} 
+                        salesperson={salesperson}
+                        effectiveDate={effectiveDate}
+                        practice={practice} 
+                        setTrigger={setTrigger}/>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header">
+                  <Typography>Adjustments Summary</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <AdjustmentSummary/>
+                </AccordionDetails>
+            </Accordion>
           </Stack>
         </Stack>
       </TabPanel>

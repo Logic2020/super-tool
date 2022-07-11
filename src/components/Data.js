@@ -70,5 +70,28 @@ export function dateToString(date) {
 export function getLatestDate(allEffectiveDates) {
   return dateToString(allEffectiveDates.map((dateString) => {
     return new Date(dateString)
-  }).sort().reverse()[0])
+  }).sort((date1, date2) => date1 - date2).reverse()[0])
+}
+
+export const getAdjustedRevenue = (revenue, increasePercent) => {
+  return increasePercent ? (revenue * (1+increasePercent/100)).toFixed(): revenue;
+};
+
+export function formatPercentage(percentage) {
+  return (100*percentage).toFixed(0) + "%"
+}
+
+export function getMonthYears(startDateTimeStr, stopDateTimeStr) {
+  let monthYearDateTimeArray = [];
+  let currentDateTime = new Date(startDateTimeStr);
+  let stopDateTime = new Date(stopDateTimeStr);
+  while (currentDateTime <= stopDateTime) {
+    monthYearDateTimeArray.push(new Date(currentDateTime));
+    currentDateTime = new Date(currentDateTime.setMonth(currentDateTime.getMonth()+1));
+  }
+
+  // reduce month array to strings 
+  return monthYearDateTimeArray.map((item) => {
+    return `${item.toLocaleString('default', { month: 'short' })} ${item.getFullYear()}`
+  });
 }

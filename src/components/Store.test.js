@@ -1,13 +1,13 @@
-import {persistState,getPersistedValue} from './store';
+import {persistState,getPersistedValue, ALL_ACCOUNTS} from './Store';
 
-test('getting a non-existent key returns 0', () => {
-  expect(getPersistedValue(storageMock(), "", "")).toBe(0);
+test('getting a non-existent segment returns 0', () => {
+  expect(getPersistedValue(storageMock(), "", ALL_ACCOUNTS)).toBe(0);
 });
 
 test('segment only', () => {
   let store = storageMock();
-  persistState(store, "seg", "", 60)
-  expect(getPersistedValue(store, "seg", "")).toBe(60);
+  persistState(store, "seg", ALL_ACCOUNTS, 60)
+  expect(getPersistedValue(store, "seg", ALL_ACCOUNTS)).toBe(60);
 });
 
 test('segment and account', () => {
@@ -22,9 +22,9 @@ test('segment and mismatched-account', () => {
   expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
 });
 
-test('segment setting, but no account', () => {
+test('set value at segment level, and request an account w/out a setting', () => {
   let store = storageMock();
-  persistState(store, "seg", "", 40)
+  persistState(store, "seg", ALL_ACCOUNTS, 40)
   expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
 });
 

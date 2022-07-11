@@ -1,5 +1,19 @@
-import {getSegmentSums} from './Report';
-import {getRelevantAccountData} from './Data';
+import {getSegmentSums, Sums} from './Sums';
+import {getRelevantAccountData} from '../components/Data';
+
+test('adding revenue sums works', () => {
+  let sums = new Sums(3);
+  let sums2 = new Sums(4);
+  sums.add(sums2)
+  expect(sums.revenue).toBe(7);
+});
+
+test('adding target revenue sums works', () => {
+  let sums = new Sums(3,5);
+  let sums2 = new Sums(4,6);
+  sums.add(sums2)
+  expect(sums.targetRevenue).toBe(11);
+});
 
 test('t-mobile revenue summing', () => {
   let segment = "T-Mobile"
