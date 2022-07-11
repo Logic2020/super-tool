@@ -24,7 +24,7 @@ export class Sums {
 }
 
 // get sums for the accounts associated with a segment
-export function getSegmentSums(segment, accountData, debug) {
+export function getSegmentSums(segment, accountData, monthYear, debug) {
 
   let sums = new Sums()
 
@@ -49,14 +49,21 @@ export function getSegmentSums(segment, accountData, debug) {
     let accountsAdjustedRevenue = accountData.reduce( (sum, item) => {
 
       // calc adjusted revenue across accounts
-      let accountIncreaseValue = getPersistedValue(localStorage, item.segment, getStoreAccountKey(item.account,item.practice))
+      let accountIncreaseValue = 
+                getPersistedValue(localStorage, 
+                                  item.segment, 
+                                  getStoreAccountKey(item.account,item.practice),
+                                  monthYear)
 
       return sum + parseInt(getAdjustedRevenue(item.revenue,accountIncreaseValue)) 
       }, 0
     )
 
     // next apply segment-level adjustment
-    let segmentIncreaseValue = getPersistedValue(localStorage, segment, ALL_ACCOUNTS)
+    let segmentIncreaseValue = getPersistedValue(localStorage, 
+                                                 segment, 
+                                                 ALL_ACCOUNTS,
+                                                 monthYear)
 
     sums.adjustedRevenue = parseInt(getAdjustedRevenue(accountsAdjustedRevenue,segmentIncreaseValue))      
   }

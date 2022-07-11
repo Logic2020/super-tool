@@ -101,6 +101,7 @@ function Row(props) {
                   {rows.map((accountRow) => (
                     <AccountRow row={accountRow} 
                                 segment={props.segment} 
+                                monthYear={props.monthYear}
                                 setTrigger={props.setTrigger}/>
                   ))}
                 </TableBody>
@@ -118,19 +119,23 @@ function SegmentRow(props) {
   let rows = props.rows;
 
   // for segment sliders
-  const [segmentIncreaseValue, setSegmentIncreaseValue] = React.useState(getPersistedValue(localStorage, props.segment,ALL_ACCOUNTS));
+  const [segmentIncreaseValue, setSegmentIncreaseValue] = 
+        React.useState(getPersistedValue(localStorage, 
+                                         props.segment,
+                                         ALL_ACCOUNTS,
+                                         props.monthYear));
 
   const handleSegmentChange = (event, newValue) => {
     setSegmentIncreaseValue(newValue);
 
     // persist changes
-    persistState(localStorage, props.segment,ALL_ACCOUNTS,newValue)
+    persistState(localStorage, props.segment,ALL_ACCOUNTS,newValue, props.monthYear)
 
     // trigger a refresh of the totals based on this new increase value
     props.setTrigger(newValue)
   };
 
-  let sums = getSegmentSums(props.segment, rows, "segment")
+  let sums = getSegmentSums(props.segment, rows, props.monthYear, "segment")
 
   return (
     <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -159,11 +164,19 @@ function AccountRow(props) {
   let accountRow = props.row
 
   // for account sliders
-  const [accountIncreaseValue, setAccountIncreaseValue] = React.useState(getPersistedValue(localStorage, segment, getStoreAccountKey(accountRow.account, accountRow.practice)));
+  const [accountIncreaseValue, setAccountIncreaseValue] = 
+          React.useState(getPersistedValue(localStorage, segment, 
+                getStoreAccountKey(accountRow.account, accountRow.practice),
+                props.monthYear));
 
   const handleAccountChange = (event, newValue) => {
     setAccountIncreaseValue(newValue);
-    persistState(localStorage, segment,getStoreAccountKey(accountRow.account,accountRow.practice),newValue)
+    persistState(localStorage, 
+                 segment,
+                 getStoreAccountKey(accountRow.account,accountRow.practice),
+                 newValue, 
+                 props.monthYear)
+
     props.setTrigger(newValue)
   };
 
@@ -192,7 +205,7 @@ function TotalsRow(props) {
                                              props.effectiveDate,
                                              props.practice)
     
-    sums.add(getSegmentSums(segment,revenueData,"totals"))
+    sums.add(getSegmentSums(segment,revenueData, props.monthYear, "totals"))
   })
 
   // text in totals row should be bolded

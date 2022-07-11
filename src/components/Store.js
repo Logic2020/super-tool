@@ -1,6 +1,6 @@
 export const ALL_ACCOUNTS = "all"
 
-export function persistState(store, segment, account, value) {
+export function persistState(store, segment, account, value, startDateStr) {
 
   // save change to local storage for later recall
   let state = getState(store)
@@ -11,7 +11,10 @@ export function persistState(store, segment, account, value) {
   }
 
   if (segment && account) {      
-    state[segment][account] = value
+    state[segment][account] = {
+      value: value,
+      startDateStr: startDateStr
+    }
   }
 
   store.setItem("state", JSON.stringify(state));
@@ -21,12 +24,14 @@ export function getState(store) {
   return store.getItem("state") ? JSON.parse(store.getItem("state")): {};
 }
 
-export function getPersistedValue(store, segment, account) {
+export function getPersistedValue(store, segment, account, desiredDateStr) {
    
   let state = store.getItem("state") ? JSON.parse(store.getItem("state")): {};
 
-  if (state && state[segment] && state[segment][account] != null) {
-    return state[segment][account]
+  if (state && state[segment] && 
+      state[segment][account] != null && 
+      (new Date(state[segment][account]["startDateStr"])).getTime() <= (new Date(desiredDateStr)).getTime()) {
+    return state[segment][account]["value"]
   } else {
     return 0
   }

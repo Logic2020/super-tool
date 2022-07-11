@@ -71,7 +71,7 @@ function SegmentSummary(props) {
                                              props.effectiveDate,
                                              props.practice)
     
-    sums.add(getSegmentSums(props.segment,revenueData,"totals"))
+    sums.add(getSegmentSums(props.segment,revenueData,monthYear,"totals"))
   })
 
   return (
@@ -101,7 +101,7 @@ function TotalsRow(props) {
                                               props.effectiveDate,
                                               props.practice)
       
-      sums.add(getSegmentSums(segment,revenueData,"totals"))
+      sums.add(getSegmentSums(segment,revenueData,monthYear,"totals"))
     })
   })
 

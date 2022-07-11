@@ -1,5 +1,5 @@
 import { powerBIQueryAPI } from "./authConfig";
-import {dateToString} from "./Data";
+import {dateToString} from "./components/Data";
 import { handleResponseStatus } from "./handleStatus";
 
 export async function ExecuteQuery(accessToken) {
