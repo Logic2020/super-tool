@@ -73,19 +73,6 @@ export function getLatestDate(allEffectiveDates) {
   }).sort().reverse()[0])
 }
 
-
-export function findMonthYearDifference(startDate, endDate){
-  let parsedStart = parseMonthYear(startDate);
-  let parsedEnd = parseMonthYear(endDate);
-  let yearDifference = parsedEnd[1] - parsedStart[1]
-  if(parsedEnd[1] > parsedStart[1]){
-    return (parsedEnd[0] + (12*yearDifference)) - parsedStart[0]
-  }
-  else{
-    return parsedEnd[0] - parsedStart[0]
-  }
-}
-
 export function findIndexOfMonth(selectedMonth, dateArray){
   dateArray.push('January, 2100')
   let sortedArray = dateArray.map((date)=>( new Date(date))).sort((date1, date2) => date1 - date2)
