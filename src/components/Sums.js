@@ -1,5 +1,5 @@
 import {getPersistedValue,getStoreAccountKey} from './Store';
-import {getAdjustedRevenue} from '../Data'
+import {getAdjustedRevenue} from '../components/Data'
 
 export class Sums {
   constructor(revenue,targetRevenue,adjustedRevenue,cogs) {

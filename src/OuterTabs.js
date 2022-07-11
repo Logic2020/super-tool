@@ -13,7 +13,7 @@ import DateTabs from './DateTabs';
 import {TabPanel,a11yProps} from './TabPanel'
 import RawDataTable from "./components/RawDataTable";
 import SummaryView from "./components/Summary";
-import {getLatestDate} from "./Data"
+import {getLatestDate} from "./components/Data"
 import {AdjustmentSummary} from "./components/AdjustmentSummary";
 
 export default function OuterTabs(props) {

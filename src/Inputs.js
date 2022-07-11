@@ -149,7 +149,7 @@ function valuetext(value) {
 
 function PercentIncrease(props) {
   return (
-    <Box sx={{ width: 30 , display: 'inline-block'}}>
+    <Box sx={{ width: 80 , display: 'inline-block'}}>
       <Slider
         aria-label="Always visible"
         value={props.value}

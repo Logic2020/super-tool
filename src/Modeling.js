@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {PercentIncrease} from './Inputs';
-import {getRelevantAccountData,getRelevantSegments,getAdjustedRevenue,formatPercentage} from './Data';
+import {getRelevantAccountData,getRelevantSegments,getAdjustedRevenue,formatPercentage} from './components/Data';
 import {persistState,getPersistedValue,getStoreAccountKey} from './components/Store';
 import {Sums, getSegmentSums} from './components/Sums'
 import { useTheme } from '@mui/material/styles';

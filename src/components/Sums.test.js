@@ -1,5 +1,5 @@
 import {getSegmentSums, Sums} from './Sums';
-import {getRelevantAccountData} from '../Data';
+import {getRelevantAccountData} from '../components/Data';
 
 test('adding revenue sums works', () => {
   let sums = new Sums(3);
