@@ -14,7 +14,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {PercentIncrease} from './Inputs';
 import {getRelevantAccountData,getRelevantSegments,getAdjustedRevenue,formatPercentage} from './components/Data';
-import {persistState,getPersistedValue,getStoreAccountKey} from './components/Store';
+import {persistState,getPersistedValue,getStoreAccountKey, ALL_ACCOUNTS} from './components/Store';
 import {Sums, getSegmentSums} from './components/Sums'
 import { useTheme } from '@mui/material/styles';
 
@@ -118,13 +118,13 @@ function SegmentRow(props) {
   let rows = props.rows;
 
   // for segment sliders
-  const [segmentIncreaseValue, setSegmentIncreaseValue] = React.useState(getPersistedValue(localStorage, props.segment,""));
+  const [segmentIncreaseValue, setSegmentIncreaseValue] = React.useState(getPersistedValue(localStorage, props.segment,ALL_ACCOUNTS));
 
   const handleSegmentChange = (event, newValue) => {
     setSegmentIncreaseValue(newValue);
 
     // persist changes
-    persistState(localStorage, props.segment,"",newValue)
+    persistState(localStorage, props.segment,ALL_ACCOUNTS,newValue)
 
     // trigger a refresh of the totals based on this new increase value
     props.setTrigger(newValue)

@@ -16,12 +16,12 @@ function EffectiveDate(props) {
   return (
     <Box sx={{ minWidth: 150 }}>
       <FormControl fullWidth>
-        <InputLabel id="effective-date-label">Effective Date</InputLabel>
+        <InputLabel id="effective-date-label">PM Export Date</InputLabel>
         <Select
           labelId="effective-date-label"
           id="effective-date"
           value={props.value}
-          label="Effective Date"
+          label="PM Export Date"
           onChange={props.changer}
         >
           {props.allEffectiveDates.map(effectiveDate => (

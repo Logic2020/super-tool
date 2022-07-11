@@ -1,4 +1,4 @@
-import {getPersistedValue,getStoreAccountKey} from './Store';
+import {getPersistedValue,getStoreAccountKey, ALL_ACCOUNTS} from './Store';
 import {getAdjustedRevenue} from '../components/Data'
 
 export class Sums {
@@ -56,7 +56,7 @@ export function getSegmentSums(segment, accountData, debug) {
     )
 
     // next apply segment-level adjustment
-    let segmentIncreaseValue = getPersistedValue(localStorage, segment)
+    let segmentIncreaseValue = getPersistedValue(localStorage, segment, ALL_ACCOUNTS)
 
     sums.adjustedRevenue = parseInt(getAdjustedRevenue(accountsAdjustedRevenue,segmentIncreaseValue))      
   }

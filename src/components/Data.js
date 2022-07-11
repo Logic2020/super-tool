@@ -70,7 +70,7 @@ export function dateToString(date) {
 export function getLatestDate(allEffectiveDates) {
   return dateToString(allEffectiveDates.map((dateString) => {
     return new Date(dateString)
-  }).sort().reverse()[0])
+  }).sort((date1, date2) => date1 - date2).reverse()[0])
 }
 
 export const getAdjustedRevenue = (revenue, increasePercent) => {
