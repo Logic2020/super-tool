@@ -58,6 +58,7 @@ export function NormalizeData(rawResults) {
       return {
         account: item["weekly person[Account]"],
         practice: item["weekly person[Practice]"],
+        projectNumber: item["weekly person[Number]"],
         segment: item["weekly person[Segmentation]"],
         salesperson: item["weekly person[Salesperson]"],
         monthYear: item["weekly person[Month Year]"],

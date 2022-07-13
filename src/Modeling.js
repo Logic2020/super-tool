@@ -90,6 +90,7 @@ function Row(props) {
                   <TableRow>
                     <TableCell>Account</TableCell>
                     <TableCell>Practice</TableCell>
+                    <TableCell>Project</TableCell>
                     <TableCell>Current Revenue</TableCell>
                     <TableCell align="right">Revenue Increase%</TableCell>
                     <TableCell align="right">Adjusted Revenue</TableCell>
@@ -184,6 +185,7 @@ function AccountRow(props) {
     <TableRow key={props.segment-accountRow.account}>
       <TableCell component="th" scope="row">{accountRow.account}</TableCell>
       <TableCell>{accountRow.practice}</TableCell>
+      <TableCell>{accountRow.projectNumber}</TableCell>
       <TableCell>{accountRow.revenue}</TableCell>
       <TableCell align="right"><PercentIncrease value={accountIncreaseValue} changer={handleAccountChange} default={accountIncreaseValue}/></TableCell>
       <TableCell align="right">{getAdjustedRevenue(accountRow.revenue,accountIncreaseValue)}</TableCell>

@@ -59,6 +59,12 @@ const headCells = [
     label: 'Practice',
   },
   {
+    id: 'projectNumber',
+    numeric: false,
+    disablePadding: false,
+    label: 'Project Number',
+  },
+  {
     id: 'segment',
     numeric: false,
     disablePadding: false,
@@ -205,6 +211,7 @@ export default function RawDataTable(props) {
                     <TableRow>
                       <TableCell align="right">{row.account}</TableCell>
                       <TableCell align="right">{row.practice}</TableCell>
+                      <TableCell align="right">{row.projectNumber}</TableCell>
                       <TableCell align="right">{row.segment}</TableCell>
                       <TableCell align="right">{row.salesperson}</TableCell>
                       <TableCell align="right">{row.effectiveDate}</TableCell>
