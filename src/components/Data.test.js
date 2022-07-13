@@ -28,7 +28,6 @@ test('segment+salesperson filtering works', () => {
 
 test('get all segments works', () => {
   let data = getRelevantSegments(revenueData, [], "", "", "July 5, 2022");
-  console.log(data)
   expect(data.length).toBe(3);
 });
 

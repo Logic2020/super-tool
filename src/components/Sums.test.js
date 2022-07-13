@@ -17,13 +17,17 @@ test('adding target revenue sums works', () => {
 
 test('t-mobile revenue summing', () => {
   let segment = "T-Mobile"
-  let sums = getSegmentSums(segment,getRelevantAccountData(accountData, [segment], ""));
+  let sums = getSegmentSums(segment,
+                            getRelevantAccountData(accountData, [segment], ""),
+                            "July 1, 2022");
   expect(sums.revenue).toBe(62);
 });
 
 test('microsoft target summing', () => {
   let segment = "Microsoft"
-  let sums = getSegmentSums(segment,getRelevantAccountData(accountData, [segment], ""));
+  let sums = getSegmentSums(segment,
+                            getRelevantAccountData(accountData, [segment], ""),
+                            "July 1, 2022");
   expect(sums.targetRevenue).toBe(26);
 });
 

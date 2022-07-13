@@ -1,31 +1,43 @@
-import {persistState,getPersistedValue, ALL_ACCOUNTS} from './Store';
+import {persistState,getPersistedValue, ALL_ACCOUNTS, getState} from './Store';
 
 test('getting a non-existent segment returns 0', () => {
-  expect(getPersistedValue(storageMock(), "", ALL_ACCOUNTS)).toBe(0);
+  expect(getPersistedValue(storageMock(), "", ALL_ACCOUNTS, "July 1, 2022")).toBe(0);
 });
 
 test('segment only', () => {
   let store = storageMock();
-  persistState(store, "seg", ALL_ACCOUNTS, 60)
-  expect(getPersistedValue(store, "seg", ALL_ACCOUNTS)).toBe(60);
+  persistState(store, "seg", ALL_ACCOUNTS, 60, "July 1, 2022")
+  expect(getPersistedValue(store, "seg", ALL_ACCOUNTS, "July 1, 2022")).toBe(60);
 });
 
 test('segment and account', () => {
   let store = storageMock();
-  persistState(store, "seg", "practice/acc", 40, )
-  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(40);
+  persistState(store, "seg", "practice/acc", 40, "July 1, 2022")
+  expect(getPersistedValue(store, "seg", "practice/acc", "July 1, 2022")).toBe(40);
+});
+
+test('segment and account with start date after requested date', () => {
+  let store = storageMock();
+  persistState(store, "seg", "practice/acc", 40, "Sept 1, 2022")
+  expect(getPersistedValue(store, "seg", "practice/acc", "July 1, 2022")).toBe(0);
+});
+
+test('segment and account with start date before requested date', () => {
+  let store = storageMock();
+  persistState(store, "seg", "practice/acc", 40, "April 1, 2022")
+  expect(getPersistedValue(store, "seg", "practice/acc", "July 1, 2022")).toBe(40);
 });
 
 test('segment and mismatched-account', () => {
   let store = storageMock();
-  persistState(store, "seg", "practice/accs", 40)
-  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
+  persistState(store, "seg", "practice/accs", 40, "July 1, 2022")
+  expect(getPersistedValue(store, "seg", "practice/acc", "July 1, 2022")).toBe(0);
 });
 
 test('set value at segment level, and request an account w/out a setting', () => {
   let store = storageMock();
-  persistState(store, "seg", ALL_ACCOUNTS, 40)
-  expect(getPersistedValue(store, "seg", "practice/acc")).toBe(0);
+  persistState(store, "seg", ALL_ACCOUNTS, 40, "July 1, 2022")
+  expect(getPersistedValue(store, "seg", "practice/acc", "July 1, 2022")).toBe(0);
 });
 
 // Storage Mock
