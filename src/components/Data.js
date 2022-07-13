@@ -1,4 +1,4 @@
-export function getRelevantAccountData(revenueData,
+export function getRelevantSegmentData(revenueData,
                                         segments, 
                                         salesperson, 
                                         monthYear,
@@ -45,7 +45,7 @@ export function getRelevantSegments(accountData,
 
   let uniqueSegments = new Set()
 
-  let revenueData = getRelevantAccountData(accountData, 
+  let revenueData = getRelevantSegmentData(accountData, 
                                            segments, 
                                            salesperson, 
                                            monthYear,

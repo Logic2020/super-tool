@@ -38,5 +38,5 @@ export function getPersistedValue(store, segment, account, desiredDateStr) {
 }
 
 export function getStoreAccountKey(account, practice) {
-  return `${practice}/${account}`
+  return `${account}/${practice}/`
 }

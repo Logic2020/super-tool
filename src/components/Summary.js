@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import {getRelevantAccountData,getRelevantSegments,formatPercentage,getMonthYears} from '../components/Data';
+import {getRelevantSegmentData,getRelevantSegments,formatPercentage,getMonthYears} from '../components/Data';
 import {getSegmentSums, Sums} from './Sums';
 
 export default function SummaryView(props) {                                        
@@ -64,7 +64,7 @@ function SegmentSummary(props) {
 
   // sum over each month year
   getMonthYears(props.startDate,props.endDate).forEach(monthYear => {
-    let revenueData = getRelevantAccountData(props.accountData, 
+    let revenueData = getRelevantSegmentData(props.accountData, 
                                              [props.segment], 
                                              props.salesperson,
                                              monthYear,
@@ -94,7 +94,7 @@ function TotalsRow(props) {
   // sum over each month year, then sum over all segments
   getMonthYears(props.startDate,props.endDate).forEach(monthYear => {
     props.segments.forEach(segment => {
-      let revenueData = getRelevantAccountData(props.accountData, 
+      let revenueData = getRelevantSegmentData(props.accountData, 
                                               [segment], 
                                               props.salesperson,
                                               monthYear,
