@@ -12,7 +12,11 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
+
+1. in `./src/authConfig`, change `redirectUri` to `http://localhost:3000`
+2. `npm start`
+
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
