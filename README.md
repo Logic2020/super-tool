@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Super Tool
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+For modelling attainments possibilities.
 
 ## Available Scripts
 
@@ -23,13 +23,13 @@ You may also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### `npm build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Builds the app for production
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. in `./src/authConfig`, change `redirectUri` to `https://d58cyh9eofbyu.cloudfront.net`
+2. `npm run build`
+3. copy files to s3 as: `aws s3 sync build/. s3://tom-react-demo`
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
