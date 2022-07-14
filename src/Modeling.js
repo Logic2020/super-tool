@@ -16,7 +16,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {PercentIncrease} from './Inputs';
 import {getRelevantSegmentData,getRelevantSegments,getAdjustedRevenue,formatPercentage} from './components/Data';
-import {persistState,getPersistedValue,getStoreAccountKey, ALL_ACCOUNTS} from './components/Store';
+import {persistState,getPersistedValue,getStoreAccountKey, getStoreProjectKey, ALL_ACCOUNTS} from './components/Store';
 import {Sums, getAccountSums, getSegmentSums, getAccounts} from './components/Sums'
 import { useTheme } from '@mui/material/styles';
 
@@ -213,9 +213,9 @@ function AccountRow(props) {
         <TableCell>{practice}</TableCell>
         <TableCell>{sums.revenue}</TableCell>
         <TableCell align="right"><PercentIncrease value={accountIncreaseValue} changer={handleAccountChange} default={accountIncreaseValue}/></TableCell>
-        <TableCell align="right">{getAdjustedRevenue(sums.revenue,accountIncreaseValue)}</TableCell>
+        <TableCell align="right">{sums.adjustedRevenue}</TableCell>
         <TableCell align="right">{sums.targetRevenue}</TableCell>
-        <TableCell align="right">{getAdjustedRevenue(sums.revenue,accountIncreaseValue)-sums.targetRevenue}</TableCell>
+        <TableCell align="right">{sums.adjustedRevenue-sums.targetRevenue}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -259,18 +259,22 @@ function AccountRow(props) {
 
 function ProjectRow(props) {
 
-  let {row} = props
+  let {row, segment, account, practice, monthYear} = props
 
-  // for account sliders
-  const [projectIncreaseValue, setProjectIncreaseValue] = React.useState();
+  // for project sliders
+  const [projectIncreaseValue, setProjectIncreaseValue] = React.useState(getPersistedValue(localStorage, 
+                                                                    segment, 
+                                                                    getStoreProjectKey(account, practice,row.projectNumber),
+                                                                    monthYear));
 
   const handleProjectChange = (event, newValue) => {
     setProjectIncreaseValue(newValue);
-    // persistState(localStorage, 
-    //           segment,
-    //           getStoreAccountKey(account,practice),
-    //           newValue, 
-    //           props.monthYear)
+
+    persistState(localStorage, 
+              segment,
+              getStoreProjectKey(account,practice, row.projectNumber),
+              newValue, 
+              monthYear)
 
     props.setTrigger(newValue)
   };
@@ -279,7 +283,7 @@ function ProjectRow(props) {
 
   return (
     <React.Fragment>
-      <TableRow >
+      <TableRow key={row.projectName}>
         <TableCell/>
         <TableCell component="th" scope="row">
         <Tooltip title={row.projectName}>
