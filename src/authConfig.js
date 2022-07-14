@@ -1,8 +1,3 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-
 import { LogLevel } from "@azure/msal-browser";
 
 /**
@@ -70,14 +65,4 @@ const superToolDatasetID = "f0deff0f-b758-4403-848e-b6c193e21059"
 // endpoint used to pull data from power BI
 export const powerBIQueryAPI = {
     executeQueryEndpoint: `https://api.powerbi.com/v1.0/myorg/groups/${superToolDatasetGroupID}/datasets/${superToolDatasetID}/executeQueries`
-};
-
-// TODO: hook these up
-export const defaultTargetMarginPercentage = 50;
-
-export const targetMarginPercentages = {
-  "T-Mobile": 40,
-  "Microsoft": 40,
-  "San Diego Gas & Electric": 45,
-  "Pacific Gas & Electric": 40
 };

@@ -10,12 +10,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {PercentIncrease} from './Inputs';
 import {getRelevantSegmentData,getRelevantSegments,getAdjustedRevenue,formatPercentage} from './components/Data';
 import {persistState,getPersistedValue,getStoreAccountKey, ALL_ACCOUNTS} from './components/Store';
-import {Sums, getAccountSums, getSegmentSums} from './components/Sums'
+import {Sums, getAccountSums, getSegmentSums, getAccounts} from './components/Sums'
 import { useTheme } from '@mui/material/styles';
 
 export default function ModelingView(props) {                                       
@@ -102,11 +104,11 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {accounts.map((account) => (
+                  {accounts.map((accountObj) => (
                     <AccountRow rows={rows} 
                                 segment={props.segment}
-                                account={account.name}
-                                practice={account.practice}
+                                account={accountObj.name}
+                                practice={accountObj.practice}
                                 monthYear={props.monthYear}
                                 setTrigger={props.setTrigger}/>
                   ))}
@@ -193,7 +195,7 @@ function AccountRow(props) {
   });
 
   // sum over the account rows
-  let sums = getAccountSums(accountRows, monthYear, "account")
+  let sums = getAccountSums(accountRows, segment, account, practice, monthYear, "account")
 
   return (
     <React.Fragment>
@@ -273,18 +275,24 @@ function ProjectRow(props) {
     props.setTrigger(newValue)
   };
 
+  let adjustedRevenue = getAdjustedRevenue(row.revenue,projectIncreaseValue)
+
   return (
     <React.Fragment>
       <TableRow >
         <TableCell/>
-        <TableCell component="th" scope="row">{row.projectNumber}</TableCell>
-        <TableCell align="right">start date</TableCell>
-        <TableCell align="right">end date</TableCell>
+        <TableCell component="th" scope="row">
+        <Tooltip title={row.projectName}>
+          <Button>{row.projectNumber}</Button>
+        </Tooltip>
+        </TableCell>
+        <TableCell align="right">{row.projectStartDate}</TableCell>
+        <TableCell align="right">{row.projectEndDate}</TableCell>
         <TableCell align="right">{row.revenue}</TableCell>
         <TableCell align="right"><PercentIncrease value={projectIncreaseValue} changer={handleProjectChange} default={projectIncreaseValue}/></TableCell>
-        <TableCell align="right">TBD</TableCell>
+        <TableCell align="right">{adjustedRevenue}</TableCell>
         <TableCell align="right">{row.targetRevenue}</TableCell>
-        <TableCell align="right">TBD</TableCell>
+        <TableCell align="right">{adjustedRevenue - row.targetRevenue}</TableCell>
       </TableRow>
     </React.Fragment>
   );
@@ -321,20 +329,4 @@ function TotalsRow(props) {
       </TableRow>
     </React.Fragment>
   );
-}
-
-export function getAccounts(rows) {
-
-  let uniqueAccounts = new Set()
-
-  rows.forEach(item => {
-    uniqueAccounts.add(`${item.account}/${item.practice}`)
-  })
-
-  return Array.from(uniqueAccounts).map(item => {
-    let [account, practice] = item.split("/")
-    return { 
-      name: account,
-      practice: practice,
-    }})
 }

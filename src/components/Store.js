@@ -40,3 +40,7 @@ export function getPersistedValue(store, segment, account, desiredDateStr) {
 export function getStoreAccountKey(account, practice) {
   return `${account}/${practice}/`
 }
+
+export function getStoreProjectKey(account, practice, project) {
+  return `${account}/${practice}/${project}`
+}
