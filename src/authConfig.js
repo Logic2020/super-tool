@@ -1,8 +1,3 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
-
 import { LogLevel } from "@azure/msal-browser";
 
 /**
@@ -14,7 +9,7 @@ import { LogLevel } from "@azure/msal-browser";
 export const msalConfig = {
     auth: {
         // ID of the "super-tool" app in azure app registrations
-        clientId: "eb49b8bc-4209-4399-93b9-d32ea02286a1",
+        clientId: "87c05ad0-62d3-41c8-b815-2f3cd009ac99",
         authority: "https://login.microsoftonline.com/common",
         // use localhost for local development
         redirectUri: "http://localhost:3000/"
@@ -61,20 +56,13 @@ export const loginRequest = {
     scopes: ["https://analysis.windows.net/powerbi/api/Dataset.Read.All"]
 };
 
+// ID of the workspace containing the data set
+const superToolDatasetGroupID = "9fccabdc-6d8e-4c5c-89de-92976f771206"
+
 // ID of super tool dataset in power BI
-const superToolDatasetID = "c408cf9a-c91c-466b-8543-75a998ff04ca"
+const superToolDatasetID = "f0deff0f-b758-4403-848e-b6c193e21059"
 
 // endpoint used to pull data from power BI
 export const powerBIQueryAPI = {
-    executeQueryEndpoint: `https://api.powerbi.com/v1.0/myorg/datasets/${superToolDatasetID}/executeQueries`
-};
-
-// TODO: hook these up
-export const defaultTargetMarginPercentage = 50;
-
-export const targetMarginPercentages = {
-  "T-Mobile": 40,
-  "Microsoft": 40,
-  "San Diego Gas & Electric": 45,
-  "Pacific Gas & Electric": 40
+    executeQueryEndpoint: `https://api.powerbi.com/v1.0/myorg/groups/${superToolDatasetGroupID}/datasets/${superToolDatasetID}/executeQueries`
 };

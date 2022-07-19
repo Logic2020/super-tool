@@ -71,6 +71,10 @@ export default function OuterTabs(props) {
   // for triggering refreshes of tabular data based on slider changes
   const [trigger, setTrigger] = React.useState(0); 
 
+  const handleTrigger = (newValue) => {
+    setTrigger(newValue);
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -109,7 +113,7 @@ export default function OuterTabs(props) {
                       salesperson={salesperson}
                       effectiveDate={effectiveDate}
                       practice={practice} 
-                      setTrigger={setTrigger}/>
+                      setTrigger={handleTrigger}/>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -125,7 +129,7 @@ export default function OuterTabs(props) {
                         salesperson={salesperson}
                         effectiveDate={effectiveDate}
                         practice={practice} 
-                        setTrigger={setTrigger}/>
+                        setTrigger={handleTrigger}/>
               </AccordionDetails>
             </Accordion>
             <Accordion>

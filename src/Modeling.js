@@ -10,12 +10,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {PercentIncrease} from './Inputs';
-import {getRelevantAccountData,getRelevantSegments,getAdjustedRevenue,formatPercentage} from './components/Data';
-import {persistState,getPersistedValue,getStoreAccountKey, ALL_ACCOUNTS} from './components/Store';
-import {Sums, getSegmentSums} from './components/Sums'
+import {getRelevantSegmentData,getRelevantSegments,getAdjustedRevenue,formatPercentage} from './components/Data';
+import {persistState,getPersistedValue,getStoreAccountKey, getStoreProjectKey, ALL_ACCOUNTS} from './components/Store';
+import {Sums, getAccountSums, getSegmentSums, getAccounts} from './components/Sums'
 import { useTheme } from '@mui/material/styles';
 
 export default function ModelingView(props) {                                       
@@ -45,7 +47,7 @@ export default function ModelingView(props) {
           {activeSegments.map((segment) => (
             <Row key={segment} 
               segment={segment} 
-              rows={getRelevantAccountData(props.accountData, 
+              rows={getRelevantSegmentData(props.accountData, 
                                           [segment], 
                                           props.salesperson,
                                           props.monthYear,
@@ -70,6 +72,9 @@ function Row(props) {
   const { rows, segment } = props;
   const [open, setOpen] = React.useState(false);
 
+  // get the accounts for this segment
+  let accounts = getAccounts(rows);
+
   return (
     <React.Fragment>
       <SegmentRow segment={segment} 
@@ -88,6 +93,7 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
+                    <TableCell />
                     <TableCell>Account</TableCell>
                     <TableCell>Practice</TableCell>
                     <TableCell>Current Revenue</TableCell>
@@ -98,9 +104,11 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows.map((accountRow) => (
-                    <AccountRow row={accountRow} 
-                                segment={props.segment} 
+                  {accounts.map((accountObj) => (
+                    <AccountRow rows={rows} 
+                                segment={props.segment}
+                                account={accountObj.name}
+                                practice={accountObj.practice}
                                 monthYear={props.monthYear}
                                 setTrigger={props.setTrigger}/>
                   ))}
@@ -160,37 +168,138 @@ function SegmentRow(props) {
 
 function AccountRow(props) {
 
-  let segment = props.segment
-  let accountRow = props.row
+  let {segment, account, practice, rows, monthYear} = props;
+
+  const [open, setOpen] = React.useState(false);
 
   // for account sliders
   const [accountIncreaseValue, setAccountIncreaseValue] = 
           React.useState(getPersistedValue(localStorage, segment, 
-                getStoreAccountKey(accountRow.account, accountRow.practice),
+                getStoreAccountKey(account, practice),
                 props.monthYear));
 
   const handleAccountChange = (event, newValue) => {
     setAccountIncreaseValue(newValue);
     persistState(localStorage, 
                  segment,
-                 getStoreAccountKey(accountRow.account,accountRow.practice),
+                 getStoreAccountKey(account,practice),
                  newValue, 
                  props.monthYear)
 
     props.setTrigger(newValue)
   };
 
+  // isolate the rows for this account and practice
+  let accountRows = rows.filter(item => {
+    return item.account === account && item.practice === practice
+  });
+
+  // sum over the account rows
+  let sums = getAccountSums(accountRows, segment, account, practice, monthYear, "account")
+
   return (
-    <TableRow key={props.segment-accountRow.account}>
-      <TableCell component="th" scope="row">{accountRow.account}</TableCell>
-      <TableCell>{accountRow.practice}</TableCell>
-      <TableCell>{accountRow.revenue}</TableCell>
-      <TableCell align="right"><PercentIncrease value={accountIncreaseValue} changer={handleAccountChange} default={accountIncreaseValue}/></TableCell>
-      <TableCell align="right">{getAdjustedRevenue(accountRow.revenue,accountIncreaseValue)}</TableCell>
-      <TableCell align="right">{accountRow.targetRevenue}</TableCell>
-      <TableCell align="right">{getAdjustedRevenue(accountRow.revenue,accountIncreaseValue)-accountRow.targetRevenue}</TableCell>
-    </TableRow>
+    <React.Fragment>
+      <TableRow key={account-practice}>
+        <TableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!(open))}
+          >
+            {props.open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row">{account}</TableCell>
+        <TableCell>{practice}</TableCell>
+        <TableCell>{sums.revenue}</TableCell>
+        <TableCell align="right"><PercentIncrease value={accountIncreaseValue} changer={handleAccountChange} default={accountIncreaseValue}/></TableCell>
+        <TableCell align="right">{sums.adjustedRevenue}</TableCell>
+        <TableCell align="right">{sums.targetRevenue}</TableCell>
+        <TableCell align="right">{sums.adjustedRevenue-sums.targetRevenue}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography variant="h6" gutterBottom component="div">
+                By Project
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell />
+                    <TableCell>Project Number</TableCell>
+                    <TableCell>Start Date</TableCell>
+                    <TableCell>End Date</TableCell>
+                    <TableCell>Current Revenue</TableCell>
+                    <TableCell align="right">Revenue Increase%</TableCell>
+                    <TableCell align="right">Adjusted Revenue</TableCell>
+                    <TableCell align="right">Target Revenue</TableCell>
+                    <TableCell align="right">Over/Under</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {accountRows.map((projectRow) => (
+                    <ProjectRow row={projectRow} 
+                                segment={segment}
+                                account={account}
+                                practice={practice}
+                                monthYear={props.monthYear}
+                                setTrigger={props.setTrigger}/>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>      
+    </React.Fragment>
   )
+}
+
+function ProjectRow(props) {
+
+  let {row, segment, account, practice, monthYear} = props
+
+  // for project sliders
+  const [projectIncreaseValue, setProjectIncreaseValue] = React.useState(getPersistedValue(localStorage, 
+                                                                    segment, 
+                                                                    getStoreProjectKey(account, practice,row.projectNumber),
+                                                                    monthYear));
+
+  const handleProjectChange = (event, newValue) => {
+    setProjectIncreaseValue(newValue);
+
+    persistState(localStorage, 
+              segment,
+              getStoreProjectKey(account,practice, row.projectNumber),
+              newValue, 
+              monthYear)
+
+    props.setTrigger(newValue)
+  };
+
+  let adjustedRevenue = getAdjustedRevenue(row.revenue,projectIncreaseValue)
+
+  return (
+    <React.Fragment>
+      <TableRow key={row.projectName}>
+        <TableCell/>
+        <TableCell component="th" scope="row">
+        <Tooltip title={row.projectName}>
+          <Button>{row.projectNumber}</Button>
+        </Tooltip>
+        </TableCell>
+        <TableCell align="right">{row.projectStartDate}</TableCell>
+        <TableCell align="right">{row.projectEndDate}</TableCell>
+        <TableCell align="right">{row.revenue}</TableCell>
+        <TableCell align="right"><PercentIncrease value={projectIncreaseValue} changer={handleProjectChange} default={projectIncreaseValue}/></TableCell>
+        <TableCell align="right">{adjustedRevenue}</TableCell>
+        <TableCell align="right">{row.targetRevenue}</TableCell>
+        <TableCell align="right">{adjustedRevenue - row.targetRevenue}</TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
 }
 
 function TotalsRow(props) {
@@ -198,7 +307,7 @@ function TotalsRow(props) {
   let sums = new Sums()
 
   props.segments.forEach(segment => {
-    let revenueData = getRelevantAccountData(props.accountData, 
+    let revenueData = getRelevantSegmentData(props.accountData, 
                                              [segment], 
                                              props.salesperson,
                                              props.monthYear,
@@ -225,5 +334,3 @@ function TotalsRow(props) {
     </React.Fragment>
   );
 }
-
-
